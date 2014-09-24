@@ -42,7 +42,7 @@
 	<script type="text/javascript">
 
 		//Setup variables
-		var n = 3;	
+		var n = 20;	
 
 		//Functions
 		function circles01() {
@@ -56,13 +56,16 @@
 
 			var h1 = viewportHeight*0.9;
 			var w1 = 0.7072*h1;
-			var h2 = 0.618*h1;
-			var w2 = h2
+			//var h2 = 0.618*h1;
+			var h2 = 0.4*h1;
+			var w2 = h2;
 
 			var hInt = h2/n;
 			var wInt = hInt;
 
 			var radius = (0.618*hInt)/2;
+
+			var testData = []
 
 			// Adjust canvas size to window size and centre it
 			canvas.height = h1;
@@ -73,29 +76,33 @@
 			canvas.style.top = (viewportHeight - h1) / 2 + "px";
 			canvas.style.left = (viewportWidth - w1) / 2 + "px";
 
-			// Create pcentroid oint coordinates
+			// Create centroid point coordinates
 			var centroidsArray = []
 			for (var i = 0; i <= n; i++) {
-				var centroid = new paper.Point({});
 				for (var j = 0; j <= n; j++) {
+					var centroid = new paper.Point({});
 					centroid.x = ((w1-w2)/2)+wInt*i;
 					centroid.y = ((h1-h2)/2)+hInt*j;
-					centroidsArray[i] = centroid;
-					
+					centroidsArray.push(centroid);
 				}
 			};
 
-			
-
 			// Draw circles from point coordinates and radius
-			var newCircles = []
 			for (var i = 0; i < centroidsArray.length; i++) {
+			//for (var i = 0; i < 5; i++) {
 				var centroid = centroidsArray[i]
-				newCircles.push(new paper.Path.Circle(new paper.Point(centroid.x, centroid.y), radius));
-				document.getElementById("test").innerText=centroid.x;
+				var circle = []
+				circle = new paper.Path.Circle(new paper.Point(centroid.x, centroid.y), radius);
+				circle.fillColor = "black";
+				//testData.push("/",centroid.x,centroid.y);
+				//newCircles = (new paper.Path.Circle(new paper.Point(centroid.x, centroid.y), circleRadius));
 			};
 
-			newCircles.fillColor = "black";
+			paper.view.draw();
+
+			//document.getElementById("test").innerText=testData;
+
+			//newCircles.fillColor = "black";
 
 		};
 
