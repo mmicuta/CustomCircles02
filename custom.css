@@ -1,12 +1,4 @@
-.bar {
-    display: inline-block;
-    width: 20px;
-    height: 75px;   /* We'll override this later */
-    background-color: teal;
-    margin: 1px;
-}
-
-svg {
+#canvas01 {
 	border-style: solid;
 	border-width: thin;
 	border-color: hsla(0,0%,70%,1.0);

@@ -35,82 +35,90 @@
 	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
 
 
-	<script src="../jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="d3.v3.js" type="text/javascript" charset="utf-8"></script>
+	<script src="jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="paper.js" type="text/javascript" charset="utf-8"></script>
 	<!--<script src="../circles.js" type="text/javascript" charset="utf-8"></script>-->
 
-</head>
-<body>
-
 	<script type="text/javascript">
-		
+
 		//Setup variables
+		var n = 3;	
 
-		var n = 4;
+		//Functions
+		function circles01() {
+			// Set up canvas and paper.js project
+			var canvas = document.getElementById("canvas01"); 
+			paper.setup(canvas);
 
-		var h1 = 0.7*window.innerWidth;
-		var w1 = 0.7072*h1;
-		var h2 = 0.618*h1;
-		var w2 = h2
+			// Declare input variables
+			viewportHeight = $(window).height()
+			viewportWidth = $(window).width()
 
-		var hInt = h2/n;
-		var wInt = hInt;
+			var h1 = viewportHeight*0.9;
+			var w1 = 0.7072*h1;
+			var h2 = 0.618*h1;
+			var w2 = h2
 
-		var radius = (0.618*hInt)/2;
+			var hInt = h2/n;
+			var wInt = hInt;
+
+			var radius = (0.618*hInt)/2;
+
+			// Adjust canvas size to window size and centre it
+			canvas.height = h1;
+			canvas.width = w1;
+			canvas.style.position = "absolute";
+			canvas.setAttribute("width", w1);
+			canvas.setAttribute("height", h1);
+			canvas.style.top = (viewportHeight - h1) / 2 + "px";
+			canvas.style.left = (viewportWidth - w1) / 2 + "px";
+
+			// Create pcentroid oint coordinates
+			var centroidsArray = []
+			for (var i = 0; i <= n; i++) {
+				var centroid = new paper.Point({});
+				for (var j = 0; j <= n; j++) {
+					centroid.x = ((w1-w2)/2)+wInt*i;
+					centroid.y = ((h1-h2)/2)+hInt*j;
+					centroidsArray[i] = centroid;
+					
+				}
+			};
+
+			
+
+			// Draw circles from point coordinates and radius
+			var newCircles = []
+			for (var i = 0; i < centroidsArray.length; i++) {
+				var centroid = centroidsArray[i]
+				newCircles.push(new paper.Path.Circle(new paper.Point(centroid.x, centroid.y), radius));
+				document.getElementById("test").innerText=centroid.x;
+			};
+
+			newCircles.fillColor = "black";
+
+		};
+
+		//Setup SVG Canvas
+		$(document).ready(function() {
+			circles01();
+		});
+
+		//Resize canvas to match window size
+		$(window).resize(function() {
+			circles01();
+		});
 
 		//Data
-		var coordinates = function(x,y) {
-			this.X = x;
-			this.Y = y;
-		}
 
-		var points = []
-		for (var i = 0; i <= n; i++) {
-			points[i] = [];
-			for (var j = 0; j <= n; j++) {
-				points[i][j] = coordinates(((w1-w2)/2)+wInt*i, ((h1-h2)/2)+hInt*j)
-			}
-		}
-		
-		//Create SVG element
-		var svg = d3.select("body")
-					.append("svg")
-					.attr("width", w1)
-					.attr("height", h1);
 
-		var circles = svg.selectAll("circle")
-			.data(points).enter()
-			.append("circle")
-			.attr("cx", w1/2)
-			.attr("cy", h1/2)
-			//.attr("cx", function(d,i) {return d.X[i]})
-			//.attr("cx", function(d,i) {return d.Y[i]})
-			.attr("r", radius);
 
 	</script>
 
-	<!-- Primary Page Layout
-	================================================== -->
+</head>
+<body>
+	<div id="test"></div>
+	<canvas id="canvas01"></canvas>
 
-	<!-- Delete everything in this .container and get started on your own site! -->
-	<!--
-	<div class="container">
-		<div class="sixteen columns">
-			<h1 class="remove-bottom" style="margin-top: 40px">Circle Graphic</h1>
-			<h5>Testing the creation of a grid of circles with Raphael.js</h5>
-			<hr />
-		</div>
-		
-		<div class="sixteen columns">
-			<div class="testArea">
-			</div>
-		</div>
-	</div>
-	-->
-	<!-- container -->
-
-
-<!-- End Document
-================================================== -->
 </body>
 </html>
