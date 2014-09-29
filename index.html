@@ -21,6 +21,7 @@
 	<link rel="stylesheet" href="stylesheets/base.css">
 	<link rel="stylesheet" href="stylesheets/skeleton.css">
 	<link rel="stylesheet" href="stylesheets/layout.css">
+	<link rel="stylesheet" href="jquery-ui.css">
 	<link rel="stylesheet" href="custom.css">
 
 	<!--[if lt IE 9]>
@@ -36,13 +37,15 @@
 
 
 	<script src="jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="jquery-ui.js" type="text/javascript" charset="utf-8"></script>
 	<script src="paper.js" type="text/javascript" charset="utf-8"></script>
 	<!--<script src="../circles.js" type="text/javascript" charset="utf-8"></script>-->
 
 	<script type="text/javascript">
 
 		//Setup variables
-		var n = 20;	
+		var n = 9;	
+		//var n = ( $( "#slider" ).slider( "value" ) );
 
 		//Functions
 		function circles01() {
@@ -100,7 +103,7 @@
 
 			paper.view.draw();
 
-			//document.getElementById("test").innerText=testData;
+			document.getElementById("test").innerText=n;
 
 			//newCircles.fillColor = "black";
 
@@ -116,6 +119,22 @@
 			circles01();
 		});
 
+		
+
+
+		$(function() {
+	    $( "#slider" ).slider({
+			value: 5,
+			min: 1,
+			max: 50,
+			step: 1,
+			change: function( event, ui ) {
+				circles01();
+			}
+	    });
+	    //var n = val( $( "#slider" ).slider( "value" ) );
+	    //$( "#amount" ).val( $( "#slider" ).slider( "value" ) );
+	  	});
 		//Data
 
 
@@ -126,6 +145,7 @@
 <body>
 	<div id="test"></div>
 	<canvas id="canvas01"></canvas>
+	<div id="slider"></div>
 
 </body>
 </html>
