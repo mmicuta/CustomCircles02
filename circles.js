@@ -7,10 +7,11 @@ $(function() {
 		step: 1,
 		slide: function(){
 			document.getElementById("test").innerText=$("#slider").slider("value");
+			circles01();
 		},
 		change: function(event, ui){
 			//var n = $("#slider").slider("value");
-			circles01();
+			//circles01();
 		}
 	});
 	var n = $("#slider").slider("value");
@@ -57,7 +58,7 @@ function circles01() {
 	var centroidsArray = []
 	for (var i = 0; i <= n; i++) {
 		for (var j = 0; j <= n; j++) {
-			var centroid = new paper.Point({});
+			var centroid = new paper.Point({state:1});
 			centroid.x = ((w1-w2)/2)+wInt*i;
 			centroid.y = ((h1-h2)/2)+hInt*j;
 			centroidsArray.push(centroid);
@@ -69,7 +70,9 @@ function circles01() {
 		var centroid = centroidsArray[i]
 		var circle = []
 		circle = new paper.Path.Circle(new paper.Point(centroid.x, centroid.y), radius);
-		circle.fillColor = "black";
+		if (centroidsArray[i].state = Math.floor(Math.random()*2)) {
+			circle.fillColor = "black"
+		}
 	};
 
 	paper.view.draw();
