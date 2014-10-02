@@ -18,8 +18,6 @@ $(function() {
 });
 
 
-//var n = 3;
-
 //Functions
 function circles01() {
 	// Set up canvas and paper.js project
@@ -29,17 +27,20 @@ function circles01() {
 	// Declare input variables
 	var n = $("#slider").slider("value");
 
-	viewportHeight = $(window).height()
-	viewportWidth = $(window).width()
+	canvasHeight = $(window).height();
+	//canvasWidth = $(window).width();
+	canvasWidth = $(canvas).outerWidth();
 
-	var h1 = viewportHeight*0.9;
-	var w1 = 0.7072*h1;
+
+	var h1 = canvasHeight*0.9;
+	var w1 = canvasWidth;
+	//var w1 = 0.7072*h1;
 	//var h2 = 0.618*h1;
-	var h2 = 0.4*h1;
-	var w2 = h2;
+	var h2 = 0.85*h1;
+	var w2 = 0.85*w1;
 
 	var hInt = h2/n;
-	var wInt = hInt;
+	var wInt = w2/n;
 
 	var radius = (0.618*hInt)/2;
 
@@ -48,11 +49,11 @@ function circles01() {
 	// Adjust canvas size to window size and centre it
 	canvas.height = h1;
 	canvas.width = w1;
-	canvas.style.position = "absolute";
-	canvas.setAttribute("width", w1);
-	canvas.setAttribute("height", h1);
-	canvas.style.top = (viewportHeight - h1) / 2 + "px";
-	canvas.style.left = (viewportWidth - w1) / 2 + "px";
+	//canvas.style.position = "absolute";
+	//canvas.setAttribute("width", w1);
+	//canvas.setAttribute("height", h1);
+	//canvas.style.top = (viewportHeight - h1) / 2 + "px";
+	//canvas.style.left = (viewportWidth - w1) / 2 + "px";
 
 	// Create centroid point coordinates
 	var centroidsArray = []
@@ -72,6 +73,9 @@ function circles01() {
 		circle = new paper.Path.Circle(new paper.Point(centroid.x, centroid.y), radius);
 		if (centroidsArray[i].state = Math.floor(Math.random()*2)) {
 			circle.fillColor = "black"
+		} else {
+			circle.strokecolor = "black";
+			circle.strokewidth = 1
 		}
 	};
 

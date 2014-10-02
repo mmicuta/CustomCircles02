@@ -1,5 +1,8 @@
 #canvas01 {
-	border-style: solid;
+	/*border-style: solid;
 	border-width: thin;
-	border-color: hsla(0,0%,70%,1.0);
+	border-color: hsla(0,0%,70%,1.0);*/
+	display: block;
+	margin: 0 auto;
+	width: 100%;
 }
