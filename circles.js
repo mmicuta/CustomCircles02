@@ -2,11 +2,11 @@
 $(function() {
 	$( "#slider" ).slider({
 		value: 5,
-		min: 1,
+		min: 3,
 		max: 50,
 		step: 1,
 		slide: function(){
-			document.getElementById("test").innerText=$("#slider").slider("value");
+			//document.getElementById("test").innerText=$("#slider").slider("value");
 			circles01();
 		},
 		change: function(event, ui){
@@ -14,7 +14,7 @@ $(function() {
 			//circles01();
 		}
 	});
-	var n = $("#slider").slider("value");
+	//var n = $("#slider").slider("value");
 });
 
 
@@ -27,41 +27,45 @@ function circles01() {
 	// Declare input variables
 	var n = $("#slider").slider("value");
 
-	canvasHeight = $(window).height();
+	//canvasHeight = $(window).height();
 	//canvasWidth = $(window).width();
-	canvasWidth = $(canvas).outerWidth();
+	canvasHeight = window.innerHeight;
+	canvasWidth = window.innerWidth;
+	//canvasWidth = $(canvas).outerWidth();
 
 
-	var h1 = canvasHeight*0.9;
+	// Define height and width divisions by screen proportions
+	if (canvasHeight <= canvasWidth) {
+		var nw = n;
+		var gw = canvasWidth/n;
+		var nh = canvasHeight/gw;
+	} else {
+		var nh = n;
+		var gw = canvasHeight/n;
+		var nw = canvasWidth/gw;
+	}
+
+
+	var h1 = canvasHeight;
 	var w1 = canvasWidth;
-	//var w1 = 0.7072*h1;
-	//var h2 = 0.618*h1;
-	var h2 = 0.85*h1;
-	var w2 = 0.85*w1;
+	var h2 = canvasHeight - gw;
+	var w2 =canvasWidth - gw;
 
-	var hInt = h2/n;
-	var wInt = w2/n;
-
-	var radius = (0.618*hInt)/2;
+	var radius = (0.618*gw)/2;
 
 	var testData = []
 
 	// Adjust canvas size to window size and centre it
-	canvas.height = h1;
-	canvas.width = w1;
-	//canvas.style.position = "absolute";
-	//canvas.setAttribute("width", w1);
-	//canvas.setAttribute("height", h1);
-	//canvas.style.top = (viewportHeight - h1) / 2 + "px";
-	//canvas.style.left = (viewportWidth - w1) / 2 + "px";
+	canvas.height = h2;
+	canvas.width = w2;
 
 	// Create centroid point coordinates
 	var centroidsArray = []
 	for (var i = 0; i <= n; i++) {
 		for (var j = 0; j <= n; j++) {
 			var centroid = new paper.Point({state:1});
-			centroid.x = ((w1-w2)/2)+wInt*i;
-			centroid.y = ((h1-h2)/2)+hInt*j;
+			centroid.x = ((w1-w2)/2)+gw*i;
+			centroid.y = ((h1-h2)/2)+gw*j;
 			centroidsArray.push(centroid);
 		}
 	};
@@ -81,7 +85,7 @@ function circles01() {
 
 	paper.view.draw();
 
-	document.getElementById("test").innerText=$("#slider").slider("value");
+	//document.getElementById("test").innerText=$("#slider").slider("value");
 };
 
 //Setup SVG Canvas
