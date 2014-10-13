@@ -88,13 +88,30 @@ function circles01() {
 		//	circle.strokecolor = "black";
 		//	circle.strokewidth = 1
 		//}
+		//UI Effects
+		circle.onMouseEnter = function(event){
+			this.fillColor = "hsla(0,0%,40%,1)";
+			//this.fillColor = "red";
+		};
+		circle.onMouseLeave = function(event){
+			this.fillColor = "black";
+			//this.fillColor = "red";
+		};
+
 	};
+
+	//UI Effects
+	//Mouse Hover Effect
+
+	
 
 	paper.view.draw();
 
 	//document.getElementById("test").innerText=$("#slider").slider("value");
 	//document.getElementById("test").innerText=centroidsArray.length;
 };
+
+
 
 //Setup SVG Canvas
 $(document).ready(function() {
