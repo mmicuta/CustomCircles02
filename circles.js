@@ -21,12 +21,8 @@ $(function() {
 //Functions
 function circles01() {
 	// Set up canvas and paper.js project
-	//var canvas = [];
-	//canvas = document.getElementById("canvas01"); 
-	//var canvas = Raphael(document.getElementById("canvas01"),w2,h2); 
-	//canvas.clear();
-	//paper.clear();
-	//paper.setup(canvas);
+	var canvas = document.getElementById("canvas01"); 
+	paper.setup(canvas);
 
 	// Declare input variables
 	var n = $("#slider").slider("value");
@@ -65,45 +61,43 @@ function circles01() {
 	var testData = []
 
 	// Adjust canvas size to window size and centre it
-	//canvas.height = h2;
-	//canvas.width = w2;
-	//canvas.style.margin = "0 auto";
-
-	
+	canvas.height = h2;
+	canvas.width = w2;
+	canvas.style.margin = "0 auto";
 
 	// Create centroid point coordinates
 	var centroidsArray = []
 	for (var i = 0; i <= nw-2; i++) {
 		for (var j = 0; j <= nh-2; j++) {
-			var centroid = new Object({state:1});
+			var centroid = new paper.Point({state:1});
 			centroid.x = ((w1-w2)/2)+gw*i;
 			centroid.y = ((h1-h2)/2)+gw*j;
 			centroidsArray.push(centroid);
 		}
 	};
 
-
-	//var paper = Raphael(canvas,w2,h2).setViewBox(0, 0, 1050, 600, true);	
-	//var paper = Raphael(0,0,w2,h2).setViewBox(0, 0, w2, h2, true);	
-	var paper = Raphael("canvas01");
-	paper.setViewBox(0,0,w2,h2,true);
-    paper.setSize('100%', '100%');
-    paper.clear();
-
 	// Draw circles from point coordinates and radius
-	var circlesGrid = []
 	for (var i = 0; i < centroidsArray.length; i++) {
 		var centroid = centroidsArray[i]
 		var circle = []
-		circle = paper.circle(centroid.x, centroid.y, radius).attr({fill: "#ffffff"});
-
-
-		//circle.fillColor = "black";
+		circle = new paper.Path.Circle(new paper.Point(centroid.x, centroid.y), radius);
+		circle.fillColor = "black";
 		//if (centroidsArray[i].state = Math.floor(Math.random()*2)) {
 		//	circle.fillColor = "black"
 		//} else {
 		//	circle.strokecolor = "black";
 		//	circle.strokewidth = 1
+		//}
+		//UI Effects
+		circle.onMouseEnter = function(event){
+			this.fillColor = "hsla(0,0%,40%,1)";
+			//this.fillColor = "red";
+		};
+		circle.onMouseLeave = function(event){
+			this.fillColor = "black";
+			//this.fillColor = "red";
+		};
+
 	};
 
 	//UI Effects
@@ -111,7 +105,7 @@ function circles01() {
 
 	
 
-	//paper.view.draw();
+	paper.view.draw();
 
 	//document.getElementById("test").innerText=$("#slider").slider("value");
 	//document.getElementById("test").innerText=centroidsArray.length;
@@ -127,7 +121,6 @@ $(document).ready(function() {
 //Resize canvas to match window size
 $(window).resize(function() {
 	circles01();
-	paper.clear();
 });
 
 //Data
