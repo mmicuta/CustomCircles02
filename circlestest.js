@@ -21,8 +21,8 @@ $(function() {
 //Functions
 function circles01() {
 	// Set up canvas and paper.js project
-	//var canvas = [];
-	//canvas = document.getElementById("canvas01"); 
+	var canvas = [];
+	canvas = document.getElementById("canvas01"); 
 	//var canvas = Raphael(document.getElementById("canvas01"),w2,h2); 
 	//canvas.clear();
 	//paper.clear();
@@ -65,9 +65,9 @@ function circles01() {
 	var testData = []
 
 	// Adjust canvas size to window size and centre it
-	//canvas.height = h2;
-	//canvas.width = w2;
-	//canvas.style.margin = "0 auto";
+	canvas.height = h2;
+	canvas.width = w2;
+	canvas.style.margin = "0 auto";
 
 	
 
@@ -83,12 +83,7 @@ function circles01() {
 	};
 
 
-	//var paper = Raphael(canvas,w2,h2).setViewBox(0, 0, 1050, 600, true);	
-	//var paper = Raphael(0,0,w2,h2).setViewBox(0, 0, w2, h2, true);	
-	var paper = Raphael("canvas01");
-	paper.setViewBox(0,0,w2,h2,true);
-    paper.setSize('100%', '100%');
-    paper.clear();
+	var paper = Raphael(document.getElementById("canvas01"),w2,h2);	
 
 	// Draw circles from point coordinates and radius
 	var circlesGrid = []
