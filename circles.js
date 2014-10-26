@@ -36,21 +36,9 @@ function circles() {
 	//Mouse Hover Effect
 
 	var tool = new Tool();
-
-	
-
-
 	
 	canvasHeight = $(document).height();
 	canvasWidth = $(document).width();
-	//canvasHeight = window.innerHeight;
-	//canvasWidth = window.innerWidth;
-	//canvasWidth = $(canvas).outerWidth();
-
-	//function onResize(event) {
-	// Whenever the window is resized, recenter the path:
-	//paper.view.setViewSize(canvasWidth, canvasHeight)
-	//}
 
 	// Define height and width divisions by screen proportions
 	if (canvasHeight >= canvasWidth) {
@@ -117,14 +105,8 @@ function circles() {
 		};			
 	};
 
-
-	
-
-
 	paper.view.draw();
 
-	//document.getElementById("test").innerText=$("#slider").slider("value");
-	//document.getElementById("test").innerText=centroidsArray.length;
 };
 
 
