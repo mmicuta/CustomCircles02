@@ -7,19 +7,21 @@ $(function() {
 		step: 1,
 		slide: function(){
 			//document.getElementById("test").innerText=$("#slider").slider("value");
-			circles01();
+			circles();
 		},
 		change: function(event, ui){
 			//var n = $("#slider").slider("value");
-			//circles01();
+			//circles();
 		}
 	});
 	//var n = $("#slider").slider("value");
 });
 
+// Install paper.js event handlers
+paper.install(window);
 
 //Functions
-function circles01() {
+function circles() {
 	// Set up canvas and paper.js project
 	var canvas = document.getElementById("canvas01"); 
 	paper.setup(canvas);
@@ -27,14 +29,28 @@ function circles01() {
 	// Declare input variables
 	var n = $("#slider").slider("value");
 
+	// Declare objects
+	var circle = []
+
+	//UI Effects
+	//Mouse Hover Effect
+
+	var tool = new Tool();
+
+	
+
+
+	
 	canvasHeight = $(document).height();
 	canvasWidth = $(document).width();
 	//canvasHeight = window.innerHeight;
 	//canvasWidth = window.innerWidth;
 	//canvasWidth = $(canvas).outerWidth();
 
-
-
+	//function onResize(event) {
+	// Whenever the window is resized, recenter the path:
+	//paper.view.setViewSize(canvasWidth, canvasHeight)
+	//}
 
 	// Define height and width divisions by screen proportions
 	if (canvasHeight >= canvasWidth) {
@@ -81,29 +97,29 @@ function circles01() {
 		var centroid = centroidsArray[i]
 		var circle = []
 		circle = new paper.Path.Circle(new paper.Point(centroid.x, centroid.y), radius);
-		circle.fillColor = "black";
-		//if (centroidsArray[i].state = Math.floor(Math.random()*2)) {
-		//	circle.fillColor = "black"
-		//} else {
-		//	circle.strokecolor = "black";
-		//	circle.strokewidth = 1
-		//}
-		//UI Effects
+		//circle.fillColor = "black";
+		//circle.strokeColor = "black";
+		//circle.strokeWidth = 1;
+		if (centroidsArray[i].state = Math.floor(Math.random()*2)) {
+			circle.fillColor = "black"
+		} else {
+			circle.strokeColor = "black";
+			circle.strokeWidth = 1
+		}
 		circle.onMouseEnter = function(event){
 			this.fillColor = "hsla(0,0%,40%,1)";
 			//this.fillColor = "red";
 		};
+
 		circle.onMouseLeave = function(event){
 			this.fillColor = "black";
 			//this.fillColor = "red";
-		};
-
+		};			
 	};
 
-	//UI Effects
-	//Mouse Hover Effect
 
 	
+
 
 	paper.view.draw();
 
@@ -115,12 +131,12 @@ function circles01() {
 
 //Setup SVG Canvas
 $(document).ready(function() {
-	circles01();
+	circles();
 });
 
 //Resize canvas to match window size
 $(window).resize(function() {
-	circles01();
+	circles();
 });
 
 //Data
