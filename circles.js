@@ -52,6 +52,7 @@ function circles() {
 	//var radius = (0.618*gw)/2;
 	var radius = (0.8*gw)/2;
 
+
 	// Adjust canvas size to window size and centre it
 	canvas.height = h2;
 	canvas.width = w2;
@@ -60,10 +61,12 @@ function circles() {
 	// Setup Paper.js project
 	paper.setup(canvas);
 
+	paper.size
+
 	// Create centroid point coordinates
 	var centroidsArray = []
-	for (var i = 0; i <= nw-2; i++) {
-		for (var j = 0; j <= nh-2; j++) {
+	for (var i = 0; i <= nw-1; i++) {
+		for (var j = 0; j <= nh-1; j++) {
 			var centroid = new paper.Point({state:1});
 			centroid.x = ((w1-w2)/2)+gw*i;
 			centroid.y = ((h1-h2)/2)+gw*j;
@@ -98,7 +101,8 @@ function circles() {
 		};			
 	};
 
-
+	//var size = view.size;
+	//document.getElementById("test").innerText=size;
 
 	paper.view.draw();
 
