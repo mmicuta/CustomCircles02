@@ -28,14 +28,14 @@ function circles() {
 	// Declare input variables
 	var n = $("#slider").slider("value");
 
-	canvasHeight = $(document).height();
-	canvasWidth = $(document).width();
+	canvasHeight = $(window).innerHeight();
+	canvasWidth = $(window).innerWidth();
 
 	// Define height and width divisions by screen proportions
 	if (canvasHeight >= canvasWidth) {
 		var nw = n;
 		var gw = canvasWidth/n;
-		var nh = Math.floor(canvasHeight/gw)
+		var nh = Math.floor(canvasHeight/gw);
 		canvasHeight = nh*gw;
 	} else {
 		var nh = n;
@@ -54,14 +54,12 @@ function circles() {
 
 
 	// Adjust canvas size to window size and centre it
-	canvas.height = h2;
-	canvas.width = w2;
+	canvas.height = h1;
+	canvas.width = w1;
 	canvas.style.margin = "0 auto";
 
 	// Setup Paper.js project
 	paper.setup(canvas);
-
-	paper.size
 
 	// Create centroid point coordinates
 	var centroidsArray = []
@@ -79,25 +77,35 @@ function circles() {
 		var centroid = centroidsArray[i]
 		var circle = []
 		circle = new paper.Path.Circle(new paper.Point(centroid.x, centroid.y), radius);
+		circle.state = centroidsArray[i].state;
 		//circle.fillColor = "black";
 		//circle.strokeColor = "black";
 		//circle.strokeWidth = 1;
-		if (centroidsArray[i].state = Math.floor(Math.random()*2)) {
-			circle.fillColor = "black"
+		//if (circle.state = Math.floor(Math.random()*2)) {
+		if (circle.state = 0) {
+			circle.fillColor = "black";
 			circle.strokeColor = "black";
-			circle.strokeWidth = 1
+			circle.strokeWidth = 1;
+			circle.state = 1;
 		} else {
-			circle.fillColor = "white"
+			circle.fillColor = "white";
 			circle.strokeColor = "black";
-			circle.strokeWidth = 1
+			circle.strokeWidth = 1;
+			circle.state = 0;
 		}
 
 		circle.onMouseEnter = function(event){
-			this.fillColor = "hsla(0,0%,50%,1)";
-		};
+				this.fillColor = "hsla(0,0%,50%,1)";
+			};
 
 		circle.onMouseLeave = function(event){
-			this.fillColor = "black";
+			if (circle.state = 0) {
+				this.fillColor = "white";
+				circle.state = 1;
+			} else {
+				this.fillColor = "black";
+				circle.state = 0;
+			}
 		};			
 	};
 
