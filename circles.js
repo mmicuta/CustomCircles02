@@ -28,8 +28,13 @@ function circles() {
 	// Declare input variables
 	var n = $("#slider").slider("value");
 
-	canvasHeight = $(window).innerHeight();
-	canvasWidth = $(window).innerWidth();
+	// Setup Paper.js project
+	paper.setup(canvas);
+
+	//canvasHeight = $(window).innerHeight();
+	//canvasWidth = $(window).innerWidth();
+	canvasHeight = paper.view.bounds.height;
+	canvasWidth = paper.view.bounds.width;
 
 	// Define height and width divisions by screen proportions
 	if (canvasHeight >= canvasWidth) {
@@ -58,8 +63,7 @@ function circles() {
 	canvas.width = w1;
 	canvas.style.margin = "0 auto";
 
-	// Setup Paper.js project
-	paper.setup(canvas);
+
 
 	// Create centroid point coordinates
 	var centroidsArray = []
