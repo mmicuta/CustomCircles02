@@ -1,9 +1,9 @@
 // UI Controls
 $(function() {
 	$( "#slider" ).slider({
-		value: 5,
+		value: 10,
 		min: 5,
-		max: 30,
+		max: 20,
 		step: 1,
 		slide: function(){
 			//document.getElementById("test").innerText=$("#slider").slider("value");
@@ -29,12 +29,14 @@ function circles() {
 	var n = $("#slider").slider("value");
 
 	// Setup Paper.js project
-	paper.setup(canvas);
+	//paper.setup(canvas);
+	//paper.project.clear();
 
-	//canvasHeight = $(window).innerHeight();
-	//canvasWidth = $(window).innerWidth();
-	canvasHeight = paper.view.bounds.height;
-	canvasWidth = paper.view.bounds.width;
+	//canvasHeight = paper.view.bounds.height;
+	//canvasWidth = paper.view.bounds.width;
+
+	canvasHeight = $(window).innerHeight();
+	canvasWidth = $(window).innerWidth();
 
 	// Define height and width divisions by screen proportions
 	if (canvasHeight >= canvasWidth) {
@@ -55,7 +57,7 @@ function circles() {
 	var w2 = canvasWidth - gw;
 
 	//var radius = (0.618*gw)/2;
-	var radius = (0.8*gw)/2;
+	var radius = (0.85*gw)/2;
 
 
 	// Adjust canvas size to window size and centre it
@@ -63,7 +65,9 @@ function circles() {
 	canvas.width = w1;
 	canvas.style.margin = "0 auto";
 
-
+	// Setup Paper.js project
+	paper.setup(canvas);
+	//paper.project.clear();
 
 	// Create centroid point coordinates
 	var centroidsArray = []
@@ -99,7 +103,7 @@ function circles() {
 		}
 
 		circle.onMouseEnter = function(event){
-				this.fillColor = "hsla(0,0%,50%,1)";
+				this.fillColor = "hsla(0,0%,80%,1)";
 			};
 
 		circle.onMouseLeave = function(event){

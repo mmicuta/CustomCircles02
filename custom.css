@@ -19,3 +19,7 @@
 	position: fixed;
 	bottom: 0px;
 }
+
+body {
+    overflow:hidden;
+}
