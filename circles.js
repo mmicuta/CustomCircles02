@@ -7,6 +7,7 @@ $(function() {
 		step: 1,
 		slide: function(){
 			//document.getElementById("test").innerText=$("#slider").slider("value");
+			n = $("#slider").slider("value");
 			circles();
 		},
 		change: function(event, ui){
@@ -17,24 +18,20 @@ $(function() {
 	//var n = $("#slider").slider("value");
 });
 
+n = 10;
+
 // Install paper.js event handlers
 paper.install(window);
 
 //Functions
 function circles() {
-	// Set up canvas and dimension based on window size
+	// Reference canvas element
 	var canvas = document.getElementById("canvas01"); 
-	
-	// Declare input variables
-	var n = $("#slider").slider("value");
 
-	// Setup Paper.js project
-	//paper.setup(canvas);
-	//paper.project.clear();
+	// Clear previous canvas
+	paper.clear(canvas);
 
-	//canvasHeight = paper.view.bounds.height;
-	//canvasWidth = paper.view.bounds.width;
-
+	// Define canvas dimensions based on view window width and height
 	canvasHeight = $(window).innerHeight();
 	canvasWidth = $(window).innerWidth();
 
@@ -55,19 +52,10 @@ function circles() {
 	var w1 = canvasWidth;
 	var h2 = canvasHeight - gw;
 	var w2 = canvasWidth - gw;
-
-	//var radius = (0.618*gw)/2;
 	var radius = (0.85*gw)/2;
-
-
-	// Adjust canvas size to window size and centre it
-	canvas.height = h1;
-	canvas.width = w1;
-	canvas.style.margin = "0 auto";
 
 	// Setup Paper.js project
 	paper.setup(canvas);
-	//paper.project.clear();
 
 	// Create centroid point coordinates
 	var centroidsArray = []
