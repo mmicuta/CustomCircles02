@@ -32,27 +32,40 @@ function circles() {
 	paper.clear(canvas);
 
 	// Define canvas dimensions based on view window width and height
-	canvasHeight = $(window).innerHeight();
-	canvasWidth = $(window).innerWidth();
+	var canvasHeight = $(window).innerHeight();
+	var canvasWidth = $(window).innerWidth();
 
 	// Define height and width divisions by screen proportions
 	if (canvasHeight >= canvasWidth) {
 		var nw = n;
 		var gw = canvasWidth/n;
 		var nh = Math.floor(canvasHeight/gw);
-		canvasHeight = nh*gw;
+		var h3 = canvasHeight-(nh*gw);
+		var w3 = 0;
+		//canvasHeight = nh*gw;
 	} else {
 		var nh = n;
 		var gw = canvasHeight/n;
 		var nw = Math.floor(canvasWidth/gw);
-		canvasWidth = nw*gw;
+		var w3 = canvasWidth-(nw*gw);
+		var h3 = 0;
+		//canvasWidth = nw*gw;
 	}
 
 	var h1 = canvasHeight;
 	var w1 = canvasWidth;
 	var h2 = canvasHeight - gw;
 	var w2 = canvasWidth - gw;
+	//var h3 = canvasHeight - canvasHeightNew;
+	//var w3 = canvasWidth - canvasWidthNew;
+
 	var radius = (0.85*gw)/2;
+
+
+	// Adjust canvas size to window size and centre it
+	canvas.height = h1;
+	canvas.width = w1;
+	canvas.style.margin = "0 auto";
 
 	// Setup Paper.js project
 	paper.setup(canvas);
@@ -62,8 +75,8 @@ function circles() {
 	for (var i = 0; i <= nw-1; i++) {
 		for (var j = 0; j <= nh-1; j++) {
 			var centroid = new paper.Point({state:1});
-			centroid.x = ((w1-w2)/2)+gw*i;
-			centroid.y = ((h1-h2)/2)+gw*j;
+			centroid.x = ((w1-w2)/2)+gw*i+(w3/2);
+			centroid.y = ((h1-h2)/2)+gw*j+(h3/2);
 			centroidsArray.push(centroid);
 		}
 	};
