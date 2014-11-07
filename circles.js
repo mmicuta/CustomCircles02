@@ -87,10 +87,6 @@ function circles() {
 		var circle = []
 		circle = new paper.Path.Circle(new paper.Point(centroid.x, centroid.y), radius);
 		circle.state = centroidsArray[i].state;
-		//circle.fillColor = "black";
-		//circle.strokeColor = "black";
-		//circle.strokeWidth = 1;
-		//if (circle.state = Math.floor(Math.random()*2)) {
 		if (circle.state = 0) {
 			circle.fillColor = "black";
 			circle.strokeColor = "black";
@@ -103,23 +99,42 @@ function circles() {
 			circle.state = 0;
 		}
 
-		circle.onMouseEnter = function(event){
-				this.fillColor = "hsla(0,0%,80%,1)";
-			};
+		//circle.onMouseEnter = function(event){
+		//		
+		//	if (circle.state = 0) {
+		//		this.fillColor = "hsla(0,0%,80%,1)";
+		//		this.fillColor = "white";
+		//		this.state = 1;
+		//	} else {
+		//		this.fillColor = "hsla(0,0%,20%,1)";
+		//		this.fillColor = "black";
+		//		this.state = 0;
+		//	}
+		//}
 
 		circle.onMouseLeave = function(event){
-			if (circle.state = 0) {
-				this.fillColor = "white";
-				circle.state = 1;
-			} else {
+			if (this.state === 0) {
 				this.fillColor = "black";
-				circle.state = 0;
+				this.state = 1;
+			} else {
+				this.fillColor = "white";
+				this.state = 0;
 			}
-		};			
-	};
+		}
 
-	//var size = view.size;
-	//document.getElementById("test").innerText=size;
+		//circle.onClick = function(event){
+		//	if (this.fillColor = "black") {
+		//		this.fillColor = "white";
+		//		//circle.state = 1;
+		//	} else {
+		//		this.fillColor = "black";
+		//		//circle.state = 0;
+		//	}
+		//}
+
+
+
+	};
 
 	paper.view.draw();
 
