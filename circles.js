@@ -118,16 +118,14 @@ function circles() {
 		}
 
 		//circle.onClick = function(event){
-		//	if (this.fillColor = "black") {
-		//		this.fillColor = "white";
-		//		//circle.state = 1;
-		//	} else {
+		//	if (this.state === 0) {
 		//		this.fillColor = "black";
-		//		//circle.state = 0;
+		//		this.state = 1;
+		//	} else {
+		//		this.fillColor = "white";
+		//		this.state = 0;
 		//	}
 		//}
-
-
 
 	};
 
