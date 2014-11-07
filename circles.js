@@ -99,18 +99,13 @@ function circles() {
 			circle.state = 0;
 		}
 
-		//circle.onMouseEnter = function(event){
-		//		
-		//	if (circle.state = 0) {
-		//		this.fillColor = "hsla(0,0%,80%,1)";
-		//		this.fillColor = "white";
-		//		this.state = 1;
-		//	} else {
-		//		this.fillColor = "hsla(0,0%,20%,1)";
-		//		this.fillColor = "black";
-		//		this.state = 0;
-		//	}
-		//}
+		circle.onMouseEnter = function(event){		
+			if (this.state === 0) {
+				this.fillColor = "hsla(0,0%,80%,1)";
+			} else {
+				this.fillColor = "hsla(0,0%,20%,1)";
+			}
+		}
 
 		circle.onMouseLeave = function(event){
 			if (this.state === 0) {
