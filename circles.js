@@ -17,6 +17,8 @@ $(function() {
 	});
 });
 
+
+
 n = 10;
 
 // Install paper.js event handlers
@@ -53,28 +55,50 @@ function circles() {
 	var w1 = canvasWidth;
 	var h2 = canvasHeight - gw;
 	var w2 = canvasWidth - gw;
-
 	var radius = (0.85*gw)/2;
-
 
 	// Adjust canvas size to window size and centre it
 	canvas.height = h1;
 	canvas.width = w1;
 	canvas.style.margin = "0 auto";
 
+
 	// Setup Paper.js project
 	paper.setup(canvas);
 
+
+
 	// Canvas specific functions
+	// Switch state and fill of object
 	function switchState(input) {
 		if (input.state === 0) {
 			input.fillColor = "black";
 			input.state = 1;
-			} else {
+		} else {
 			input.fillColor = "white";
 			input.state = 0;
-			}
+		}
 	}
+
+	// Change opacity of object based on its colour
+	function fadeFill(input) {
+		if (input.state === 0) {
+			input.fillColor = "hsla(0,0%,80%,1)";
+		} else {
+			input.fillColor = "hsla(0,0%,20%,1)";
+		}
+	}
+
+	// Record if the mouse is clicked
+	mouse = 1;
+	$("#canvas01").mousedown(function(){
+		mouse = 0;
+	});
+	$("#canvas01").mouseup(function(){
+		mouse = 1;
+	});
+
+
 
 	// Create centroid point coordinates
 	var centroidsArray = []
@@ -100,24 +124,22 @@ function circles() {
 		if (circle.state = 0) {
 			circle.fillColor = "black";
 			circle.strokeColor = "black";
-			circle.strokeWidth = 1;
+			circle.strokeWidth = 0;
 			circle.state = 1;
 		} else {
 			circle.fillColor = "white";
 			circle.strokeColor = "black";
-			circle.strokeWidth = 1;
+			circle.strokeWidth = 0;
 			circle.state = 0;
 		}
 
 
 		circle.onMouseEnter = function(event){		
-			if (this.state === 0) {
-				this.fillColor = "hsla(0,0%,80%,1)";
+			if (mouse === 0) {
+				switchState(this);
 			} else {
-				this.fillColor = "hsla(0,0%,20%,1)";
-			}
-			//circleAddress = this.address_x + "," + this.address_y;
-			//document.getElementById("test").innerText=circleAddress;		
+				fadeFill(this);
+			}	
 		}
 
 		circle.onMouseLeave = function(event){		
@@ -129,31 +151,14 @@ function circles() {
 		}		
 
 		circle.onClick = function(event){
-			//paper.onFrame()
-			//for (var i = 0; 4; i++) {
-			//	var indexX = this.address_x;
-			//	var indexY = this.address_y;
-				//var up = circle.filter(function(object){
-				//	object.address_x === indexX;
-				//})
-				//if (this.state === 0) {
-				//this.fillColor = "white";
-				//} else {
-				//this.fillColor = "black";
-				//}
 			var indexX = this.address_x;
 			var indexY = this.address_y;
-			//var up = circle.filter(function(){
-			//	circle.address_x === indexX-1;
-			//	});
 
-			circleAddress = this.address_x + "," + this.address_y;
-			document.getElementById("test").innerText=circleAddress;
+			//circleAddress = this.address_x + "," + this.address_y;
+			//document.getElementById("test").innerText=circleAddress;
 
 			switchState(this);
 		}
-
-
 	};
 
 	paper.view.draw();
@@ -170,3 +175,5 @@ $(document).ready(function() {
 $(window).resize(function() {
 	circles();
 });
+
+
