@@ -65,6 +65,17 @@ function circles() {
 	// Setup Paper.js project
 	paper.setup(canvas);
 
+	// Canvas specific functions
+	function switchState(input) {
+		if (input.state === 0) {
+			input.fillColor = "black";
+			input.state = 1;
+			} else {
+			input.fillColor = "white";
+			input.state = 0;
+			}
+	}
+
 	// Create centroid point coordinates
 	var centroidsArray = []
 	for (var i = 0; i <= nw-1; i++) {
@@ -98,14 +109,15 @@ function circles() {
 			circle.state = 0;
 		}
 
+
 		circle.onMouseEnter = function(event){		
 			if (this.state === 0) {
 				this.fillColor = "hsla(0,0%,80%,1)";
 			} else {
 				this.fillColor = "hsla(0,0%,20%,1)";
 			}
-			circleAddress = this.address_x + "," + this.address_y;
-			document.getElementById("test").innerText=circleAddress;		
+			//circleAddress = this.address_x + "," + this.address_y;
+			//document.getElementById("test").innerText=circleAddress;		
 		}
 
 		circle.onMouseLeave = function(event){		
@@ -117,16 +129,29 @@ function circles() {
 		}		
 
 		circle.onClick = function(event){
-			if (this.state === 1) {
-				this.fillColor = "white";
-				this.state = 0;
-			} else {
-				this.fillColor = "black";
-				this.state = 1;
-			}
+			//paper.onFrame()
+			//for (var i = 0; 4; i++) {
+			//	var indexX = this.address_x;
+			//	var indexY = this.address_y;
+				//var up = circle.filter(function(object){
+				//	object.address_x === indexX;
+				//})
+				//if (this.state === 0) {
+				//this.fillColor = "white";
+				//} else {
+				//this.fillColor = "black";
+				//}
+			var indexX = this.address_x;
+			var indexY = this.address_y;
+			//var up = circle.filter(function(){
+			//	circle.address_x === indexX-1;
+			//	});
+
+			circleAddress = this.address_x + "," + this.address_y;
+			document.getElementById("test").innerText=circleAddress;
+
+			switchState(this);
 		}
-
-
 
 
 	};
