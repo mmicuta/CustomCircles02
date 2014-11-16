@@ -124,12 +124,12 @@ function circles() {
 		if (circle.state = 0) {
 			circle.fillColor = "black";
 			circle.strokeColor = "black";
-			circle.strokeWidth = 0;
+			circle.strokeWidth = 1;
 			circle.state = 1;
 		} else {
 			circle.fillColor = "white";
 			circle.strokeColor = "black";
-			circle.strokeWidth = 0;
+			circle.strokeWidth = 1;
 			circle.state = 0;
 		}
 
