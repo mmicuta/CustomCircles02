@@ -166,11 +166,6 @@ function circles() {
 
 		circle.onClick = function(event){
 			for (var k = -1; k < 2; k++){
-				if (k <= -1) {
-					k = -1;
-				} else if (k >= nw-1) {
-					k = nw-1;
-				}
 				var x = this.address_x + k;
 				var y = this.address_y;
 
@@ -179,15 +174,16 @@ function circles() {
 					address_y: y
 				})
 
-				switchState(newCircle);
+				if (x <= -1) {
+					break;
+				} else if (x >= nw) {
+					break;
+				} else {
+					switchState(newCircle);
+				}
 			}
 
 			for (var k = -1; k < 2; k++){
-				if (k <= -1) {
-					k = -1;
-				} else if (k >= nw-1) {
-					k = nw-1;
-				}
 				var x = this.address_x;
 				var y = this.address_y + k;
 
@@ -196,7 +192,14 @@ function circles() {
 					address_y: y
 				})
 
-				switchState(newCircle);
+				if (y <= -1) {
+					break;
+				} else if (y >= nh) {
+					break
+				} else {
+					switchState(newCircle);
+				}
+				
 			}
 
 			//switchState(this);
