@@ -100,6 +100,11 @@ function circles() {
 		}
 	}
 
+	// Return item based on row and column address
+	function returnItem(input,col,row) {
+		return (this.address_x === col) && (this.address_y === row);
+	}
+
 	// Record if the mouse is clicked
 	mouse = 1;
 	$("#canvas01").mousedown(function(){
@@ -165,18 +170,25 @@ function circles() {
 		}		
 
 		circle.onClick = function(event){
-			var indexX = this.address_x;
-			var indexY = this.address_y;
+			//var indexX = this.address_x;
+			//var indexY = this.address_y;
+			//switchState(this);
 
-			//circleAddress = this.address_x + "," + this.address_y;
-			//document.getElementById("test").innerText=circleAddress;
+			var x = this.address_x-1;
+			var y = this.address_y;
+			//var item = circleGroup.filter(function()){}
+			var newCircle = $.grep(circleGroup, function(x,y){
+				return circleGroup.address_x === x && circleGroup.address_y === y;
+			});
 
-			switchState(this);
+			document.getElementById("test").innerText=newCircle.address_x;
+
+			switchState(newCircle);
 		}
 
 		circle.onDoubleClick = function(event){
 			switchStroke(circleGroup);
-			switchState(this);
+			//switchState(this);
 		}
 	};
 
