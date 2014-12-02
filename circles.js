@@ -19,7 +19,7 @@ $(function() {
 
 
 
-n = 10;
+n = 15;
 
 // Install paper.js event handlers
 paper.install(window);
@@ -154,6 +154,7 @@ function circles() {
 			} else {
 				fadeFill(this);
 			}	
+			//document.getElementById("test").innerText=(this.address_x + ", " + this.address_y);
 		}
 
 		circle.onMouseLeave = function(event){		
@@ -174,10 +175,10 @@ function circles() {
 					address_y: y
 				})
 
-				if (x <= -1) {
-					break;
+				if (x < 0) {
+					continue;
 				} else if (x >= nw) {
-					break;
+					continue;
 				} else {
 					switchState(newCircle);
 				}
@@ -192,16 +193,16 @@ function circles() {
 					address_y: y
 				})
 
-				if (y <= -1) {
-					break;
-				} else if (y >= nh) {
-					break
+				if (y < 0) {
+					continue;
+				} else if (y >+ nh) {
+					continue;
 				} else {
 					switchState(newCircle);
 				}
 				
 			}
-
+			//document.getElementById("test").innerText=newCircle.address_x;
 			//switchState(this);
 		}
 
