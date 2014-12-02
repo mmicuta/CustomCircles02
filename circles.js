@@ -19,7 +19,7 @@ $(function() {
 
 
 
-n = 10;
+n = 15;
 
 // Install paper.js event handlers
 paper.install(window);
@@ -80,6 +80,17 @@ function circles() {
 		}
 	}
 
+	// Switch border style
+	function switchStroke(input) {
+		if (input.borderState === 0) {
+			input.strokeColor = 1;
+			input.borderState = 1;
+		} else {
+			input.strokeColor = 0;
+			input.borderState = 0;
+		}
+	}
+
 	// Change opacity of object based on its colour
 	function fadeFill(input) {
 		if (input.state === 0) {
@@ -114,6 +125,10 @@ function circles() {
 	};
 
 	// Draw circles from point coordinates and radius
+	var circleGroup = new Group();
+	circleGroup.borderState = 1;
+	circleGroup.strokeWidth = 1;
+
 	for (var i = 0; i < centroidsArray.length; i++) {
 		var centroid = centroidsArray[i]
 		var circle = []
@@ -121,15 +136,22 @@ function circles() {
 		circle.state = centroidsArray[i].state;
 		circle.address_x = centroidsArray[i].address_x;
 		circle.address_y = centroidsArray[i].address_y;
+		circleGroup.addChild(circle);
 		if (circle.state = 0) {
 			circle.fillColor = "black";
 			circle.strokeColor = "black";
+<<<<<<< HEAD
 			circle.strokeWidth = 1;
+=======
+>>>>>>> _Cellular-Automata-Test-1
 			circle.state = 1;
 		} else {
 			circle.fillColor = "white";
 			circle.strokeColor = "black";
+<<<<<<< HEAD
 			circle.strokeWidth = 1;
+=======
+>>>>>>> _Cellular-Automata-Test-1
 			circle.state = 0;
 		}
 
@@ -140,6 +162,7 @@ function circles() {
 			} else {
 				fadeFill(this);
 			}	
+			//document.getElementById("test").innerText=(this.address_x + ", " + this.address_y);
 		}
 
 		circle.onMouseLeave = function(event){		
@@ -151,13 +174,48 @@ function circles() {
 		}		
 
 		circle.onClick = function(event){
-			var indexX = this.address_x;
-			var indexY = this.address_y;
+			for (var k = -1; k < 2; k++){
+				var x = this.address_x + k;
+				var y = this.address_y;
 
-			//circleAddress = this.address_x + "," + this.address_y;
-			//document.getElementById("test").innerText=circleAddress;
+				var newCircle = project.getItem({
+					address_x: x,
+					address_y: y
+				})
 
-			switchState(this);
+				if (x < 0) {
+					continue;
+				} else if (x >= nw) {
+					continue;
+				} else {
+					switchState(newCircle);
+				}
+			}
+
+			for (var k = -1; k < 2; k++){
+				var x = this.address_x;
+				var y = this.address_y + k;
+
+				var newCircle = project.getItem({
+					address_x: x,
+					address_y: y
+				})
+
+				if (y < 0) {
+					continue;
+				} else if (y >+ nh) {
+					continue;
+				} else {
+					switchState(newCircle);
+				}
+				
+			}
+			//document.getElementById("test").innerText=newCircle.address_x;
+			//switchState(this);
+		}
+
+		circle.onDoubleClick = function(event){
+			switchStroke(circleGroup);
 		}
 	};
 
