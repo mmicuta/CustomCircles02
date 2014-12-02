@@ -19,7 +19,7 @@ $(function() {
 
 
 
-n = 10;
+n = 15;
 
 // Install paper.js event handlers
 paper.install(window);
@@ -154,6 +154,7 @@ function circles() {
 			} else {
 				fadeFill(this);
 			}	
+			//document.getElementById("test").innerText=(this.address_x + ", " + this.address_y);
 		}
 
 		circle.onMouseLeave = function(event){		
@@ -166,11 +167,6 @@ function circles() {
 
 		circle.onClick = function(event){
 			for (var k = -1; k < 2; k++){
-				if (k <= -1) {
-					k = -1;
-				} else if (k >= nw-1) {
-					k = nw-1;
-				}
 				var x = this.address_x + k;
 				var y = this.address_y;
 
@@ -179,15 +175,16 @@ function circles() {
 					address_y: y
 				})
 
-				switchState(newCircle);
+				if (x < 0) {
+					continue;
+				} else if (x >= nw) {
+					continue;
+				} else {
+					switchState(newCircle);
+				}
 			}
 
 			for (var k = -1; k < 2; k++){
-				if (k <= -1) {
-					k = -1;
-				} else if (k >= nw-1) {
-					k = nw-1;
-				}
 				var x = this.address_x;
 				var y = this.address_y + k;
 
@@ -196,9 +193,16 @@ function circles() {
 					address_y: y
 				})
 
-				switchState(newCircle);
+				if (y < 0) {
+					continue;
+				} else if (y >+ nh) {
+					continue;
+				} else {
+					switchState(newCircle);
+				}
+				
 			}
-
+			//document.getElementById("test").innerText=newCircle.address_x;
 			//switchState(this);
 		}
 
