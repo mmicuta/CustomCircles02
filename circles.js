@@ -19,7 +19,7 @@ $(function() {
 
 
 
-n = 15;
+n = 5;
 
 // Install paper.js event handlers
 paper.install(window);
@@ -140,18 +140,10 @@ function circles() {
 		if (circle.state = 0) {
 			circle.fillColor = "black";
 			circle.strokeColor = "black";
-<<<<<<< HEAD
-			circle.strokeWidth = 1;
-=======
->>>>>>> _Cellular-Automata-Test-1
 			circle.state = 1;
 		} else {
 			circle.fillColor = "white";
 			circle.strokeColor = "black";
-<<<<<<< HEAD
-			circle.strokeWidth = 1;
-=======
->>>>>>> _Cellular-Automata-Test-1
 			circle.state = 0;
 		}
 
