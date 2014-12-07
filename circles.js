@@ -19,7 +19,7 @@ $(function() {
 
 
 
-n = 15;
+n = 20;
 
 // Install paper.js event handlers
 paper.install(window);
@@ -100,6 +100,41 @@ function circles() {
 		}
 	}
 
+	// Cellular Automata function, switch circle state based on neighbours
+	function automata(input) {
+		var count = 0;
+		var neighbours = [];
+		for (var i = -1; i <= 2; i++) {
+			for (var j = -1; j <= 2; j++) {
+				var x = input.address_x + i;
+				var y = input.address_y + j;
+
+				if (x < 0) {
+					continue;
+				} else if (x >= nw) {
+					continue;
+				} else if (y < 0) {
+					continue;
+				} else if (y >= nh) {
+					continue;
+				}
+
+				var neighbour = project.getItem({address_x: x, address_y: y})
+				var value = neighbour.state;
+				count += value;
+				neighbours.push(neighbour);
+			}
+		}
+
+		if (count >= neighbours.length/2 && input.state == 1) {
+			switchState(input)
+		} else if (count <= neighbours.length/2 && input.state == 0) {
+			switchState(input)
+		}
+	}	
+
+
+
 	// Record if the mouse is clicked
 	mouse = 1;
 	$("#canvas01").mousedown(function(){
@@ -134,6 +169,7 @@ function circles() {
 		var circle = []
 		circle = new paper.Path.Circle(new paper.Point(centroid.x, centroid.y), radius);
 		circle.state = centroidsArray[i].state;
+		circle.activated = 0;
 		circle.address_x = centroidsArray[i].address_x;
 		circle.address_y = centroidsArray[i].address_y;
 		circleGroup.addChild(circle);
@@ -146,6 +182,7 @@ function circles() {
 			circle.strokeColor = "black";
 			circle.state = 0;
 		}
+
 
 
 		circle.onMouseEnter = function(event){		
@@ -180,7 +217,7 @@ function circles() {
 				} else if (x >= nw) {
 					continue;
 				} else {
-					switchState(newCircle);
+					automata(newCircle);
 				}
 			}
 
@@ -195,10 +232,10 @@ function circles() {
 
 				if (y < 0) {
 					continue;
-				} else if (y >+ nh) {
+				} else if (y >= nh) {
 					continue;
 				} else {
-					switchState(newCircle);
+					automata(newCircle);
 				}
 				
 			}
@@ -209,7 +246,10 @@ function circles() {
 		circle.onDoubleClick = function(event){
 			switchStroke(circleGroup);
 		}
+
 	};
+
+
 
 	paper.view.draw();
 
