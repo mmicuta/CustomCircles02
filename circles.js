@@ -19,7 +19,11 @@ $(function() {
 
 
 
+<<<<<<< HEAD
 n = 5;
+=======
+n = 10;
+>>>>>>> _Cellular-Automata-Test-1
 
 // Install paper.js event handlers
 paper.install(window);
@@ -66,16 +70,16 @@ function circles() {
 	// Setup Paper.js project
 	paper.setup(canvas);
 
-
-
 	// Canvas specific functions
 	// Switch state and fill of object
 	function switchState(input) {
 		if (input.state === 0) {
-			input.fillColor = "black";
+			//input.fillColor = "black";
+			input.fadeToggle = 2;
 			input.state = 1;
 		} else {
-			input.fillColor = "white";
+			//input.fillColor = "white";
+			input.fadeToggle = 1;
 			input.state = 0;
 		}
 	}
@@ -94,11 +98,61 @@ function circles() {
 	// Change opacity of object based on its colour
 	function fadeFill(input) {
 		if (input.state === 0) {
-			input.fillColor = "hsla(0,0%,80%,1)";
+			input.fillColor.lightness = 0.2;
 		} else {
-			input.fillColor = "hsla(0,0%,20%,1)";
+			input.fillColor.lightness = 0.8;
 		}
 	}
+
+	// Gradual fade using onFrame functionality
+	function fadeTo(increment) {
+		for (var i = 0; i < circleGroup.children.length; i++) {
+			fadeValue = circleGroup.children[i].fillColor.lightness;
+			if ((circleGroup.children[i].fadeToggle === 1) && (fadeValue >= 0)) {
+				circleGroup.children[i].fillColor.lightness -= increment;
+			} else if ((circleGroup.children[i].fadeToggle === 2) && (fadeValue <= 1)) {
+				circleGroup.children[i].fillColor.lightness += increment;
+			} else {
+				circleGroup.children[i].fadeToggle = 0;
+			}
+		}
+	}
+
+	// Cellular Automata function, switch circle state based on neighbours
+	function automata(input) {
+			var count = 0;
+			var neighbours = [];
+			for (var i = -1; i <= 2; i++) {
+				for (var j = -1; j <= 2; j++) {
+					var x = input.address_x + i;
+					var y = input.address_y + j;
+
+					if (x < 0) {
+						continue;
+					} else if (x >= nw) {
+						continue;
+					} else if (y < 0) {
+						continue;
+					} else if (y >= nh) {
+						continue;
+					}
+
+					var neighbour = project.getItem({address_x: x, address_y: y})
+					var value = neighbour.state;
+					count += value;
+					neighbours.push(neighbour);
+				}
+			}
+			if (count >= neighbours.length/2 && input.state == 1) {
+				switchState(input)
+				//input.activated = 1
+			} else if (count <= neighbours.length/2 && input.state == 0) {
+				switchState(input)
+				//input.activated = 2
+			}
+	}	
+
+
 
 	// Record if the mouse is clicked
 	mouse = 1;
@@ -115,7 +169,7 @@ function circles() {
 	var centroidsArray = []
 	for (var i = 0; i <= nw-1; i++) {
 		for (var j = 0; j <= nh-1; j++) {
-			var centroid = new paper.Point({state:1});
+			var centroid = new paper.Point({state:0});
 			centroid.x = ((w1-w2)/2)+gw*i+(w3/2);
 			centroid.y = ((h1-h2)/2)+gw*j+(h3/2);
 			centroid.address_x = i;
@@ -125,48 +179,64 @@ function circles() {
 	};
 
 	// Draw circles from point coordinates and radius
-	var circleGroup = new Group();
+	circleGroup = new Group();
 	circleGroup.borderState = 1;
 	circleGroup.strokeWidth = 1;
+
 
 	for (var i = 0; i < centroidsArray.length; i++) {
 		var centroid = centroidsArray[i]
 		var circle = []
 		circle = new paper.Path.Circle(new paper.Point(centroid.x, centroid.y), radius);
 		circle.state = centroidsArray[i].state;
+		circle.activated = 0;
 		circle.address_x = centroidsArray[i].address_x;
 		circle.address_y = centroidsArray[i].address_y;
-		circleGroup.addChild(circle);
-		if (circle.state = 0) {
-			circle.fillColor = "black";
-			circle.strokeColor = "black";
-			circle.state = 1;
+		circle.fadeToggle = 0;
+		circle.fillColor = {hue: 0, saturation: 0, lightness: 0};
+		circle.strokeColor = {hue: 0, saturation: 0, lightness: 0};
+		if (circle.state === 0) {
+			//circle.fillColor = "black";
+			//circle.fillColor.lightness = 1;
 		} else {
-			circle.fillColor = "white";
-			circle.strokeColor = "black";
-			circle.state = 0;
+			//circle.fillColor = "black";
+			circle.fillColor.lightness = 1;
+			circle.state = 1;
 		}
+		circleGroup.addChild(circle);
 
 
+		// Mouse event based behaviour
 		circle.onMouseEnter = function(event){		
-			if (mouse === 0) {
-				switchState(this);
-			} else {
-				fadeFill(this);
-			}	
+			//if (mouse === 0) {
+			//	switchState(this);
+			//} else {
+			//	fadeFill(this);
+				//document.getElementById("test").innerText=this.fadeToggle;
+			//}	
 			//document.getElementById("test").innerText=(this.address_x + ", " + this.address_y);
+			fadeFill(this);
 		}
 
 		circle.onMouseLeave = function(event){		
-			if (this.state === 0) {
-				this.fillColor = "white";
+			//if (this.state === 0) {
+			//	this.fillColor.lightness = 0;
+			//} else {
+			//	this.fillColor.lightness = 1;
+			//}
+
+
+			if (mouse === 0) {
+				switchState(this);
+			} else if (this.state === 0) {
+				this.fillColor.lightness = 0;
 			} else {
-				this.fillColor = "black";
+				this.fillColor.lightness = 1;
 			}
 		}		
 
 		circle.onClick = function(event){
-			for (var k = -1; k < 2; k++){
+			for (var k = -2; k < 4; k++){
 				var x = this.address_x + k;
 				var y = this.address_y;
 
@@ -180,11 +250,11 @@ function circles() {
 				} else if (x >= nw) {
 					continue;
 				} else {
-					switchState(newCircle);
+					automata(newCircle);
 				}
 			}
 
-			for (var k = -1; k < 2; k++){
+			for (var k = -2; k < 4; k++){
 				var x = this.address_x;
 				var y = this.address_y + k;
 
@@ -195,10 +265,10 @@ function circles() {
 
 				if (y < 0) {
 					continue;
-				} else if (y >+ nh) {
+				} else if (y >= nh) {
 					continue;
 				} else {
-					switchState(newCircle);
+					automata(newCircle);
 				}
 				
 			}
@@ -209,7 +279,32 @@ function circles() {
 		circle.onDoubleClick = function(event){
 			switchStroke(circleGroup);
 		}
+
+		//circleGroup.fillColor = "red";
+		//circleGroup.fillColor.hue += 1;
+
+		view.onFrame = function(event){
+
+
+			//for (var i = 0; i < circleGroup.children.length; i++){
+				//circleGroup.children[i].fillColor.lightness -= .01;
+			//}
+			fadeTo(0.02);
+			//circleGroup.fillColor.hue += 1;
+			//circleGroup.children[2].hue += .1;
+
+		//	this.scale += 1;
+			//document.getElementById("test").innerText=event.time;
+			//document.getElementById("test").innerText=circleGroup.children.length;
+			//fadeTo(fadeToggle);
+			//circleGroup.lightness += .01;
+		}
+
 	};
+
+	
+
+
 
 	paper.view.draw();
 
