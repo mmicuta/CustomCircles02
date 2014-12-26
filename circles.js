@@ -19,11 +19,7 @@ $(function() {
 
 
 
-<<<<<<< HEAD
-n = 5;
-=======
 n = 10;
->>>>>>> _Cellular-Automata-Test-1
 
 // Install paper.js event handlers
 paper.install(window);
