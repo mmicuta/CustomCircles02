@@ -19,7 +19,7 @@ $(function() {
 
 
 
-n = 15;
+n = 5;
 fadeIncrement = 0.1;
 
 // Install paper.js event handlers
@@ -105,6 +105,82 @@ function circles() {
 	}
 
 
+	// Create automata pathway from selected circle
+	function automataPathway(input) {
+		for (var k = 0; k < 3; k++){
+			
+			k1 = k;
+			k2 = -k;
+
+			// Create automata along +ve x axis
+			var x1 = input.address_x + k1;
+			var y1 = input.address_y;
+			
+			var newCircle1 = project.getItem({
+				address_x: x1,
+				address_y: y1
+			})
+
+			if (x1 < 0) {
+				continue;
+			} else if (x1 >= nw) {
+				continue;
+			} else {
+				automata(newCircle1,k);
+			}
+
+			// Create automata along -ve x axis
+			var x2 = input.address_x + k2;
+			var y2 = input.address_y;
+			
+			var newCircle2 = project.getItem({
+				address_x: x2,
+				address_y: y2
+			})
+
+			if (x2 < 0) {
+				continue;
+			} else if (x1 >= nw) {
+				continue;
+			} else {
+				automata(newCircle2,k);
+			}
+
+			// Create automata along +ve y axis
+			var x3 = input.address_x;
+			var y3 = input.address_y + k1;
+
+			var newCircle3 = project.getItem({
+				address_x: x3,
+				address_y: y3
+			})
+
+			if (y3 < 0) {
+				continue;
+			} else if (y2 >= nh) {
+				continue;
+			} else {
+				automata(newCircle3,k);
+			}
+
+			// Create automata along -ve y axis
+			var x4 = input.address_x;
+			var y4 = input.address_y + k2;
+
+			var newCircle4 = project.getItem({
+				address_x: x4,
+				address_y: y4
+			})
+
+			if (y4 < 0) {
+				continue;
+			} else if (y4 >= nh) {
+				continue;
+			} else {
+				automata(newCircle4,k);
+			}
+		}	
+	};
 
 	// Cellular Automata function, switch circle state based on neighbours
 	function automata(input, delay) {
@@ -204,89 +280,7 @@ function circles() {
 		}		
 
 		circle.onClick = function(event){
-			stepDuration = (1/fadeIncrement) * (1/60) * 1000;
-			for (var k = 0; k < 5; k++){
-				// Calculate time required for one circle to fade;
-				//document.getElementById("test").innerText=stepDuration;
-				//setTimeout(function(){},1000);
-				//if (k > 0) {
-				//	setTimeout(function(){},1000);
-				//}
-
-				k1 = k;
-				k2 = -k;
-
-				// Create automata along +ve x axis
-				var x1 = this.address_x + k1;
-				var y1 = this.address_y;
-				
-				var newCircle1 = project.getItem({
-					address_x: x1,
-					address_y: y1
-				})
-
-				if (x1 < 0) {
-					continue;
-				} else if (x1 >= nw) {
-					continue;
-				} else {
-					automata(newCircle1,k);
-				}
-
-				// Create automata along -ve x axis
-				var x2 = this.address_x + k2;
-				var y2 = this.address_y;
-				
-				var newCircle2 = project.getItem({
-					address_x: x2,
-					address_y: y2
-				})
-
-				if (x2 < 0) {
-					continue;
-				} else if (x1 >= nw) {
-					continue;
-				} else {
-					automata(newCircle2,k);
-				}
-
-				// Create automata along +ve y axis
-				var x3 = this.address_x;
-				var y3 = this.address_y + k1;
-
-				var newCircle3 = project.getItem({
-					address_x: x3,
-					address_y: y3
-				})
-
-				if (y3 < 0) {
-					continue;
-				} else if (y2 >= nh) {
-					continue;
-				} else {
-					automata(newCircle3,k);
-				}
-
-				// Create automata along -ve y axis
-				var x4 = this.address_x;
-				var y4 = this.address_y + k2;
-
-				var newCircle4 = project.getItem({
-					address_x: x4,
-					address_y: y4
-				})
-
-				if (y4 < 0) {
-					continue;
-				} else if (y4 >= nh) {
-					continue;
-				} else {
-					automata(newCircle4,k);
-				}
-			}
-
-			//document.getElementById("test").innerText=newCircle.address_x;
-			//switchState(this);
+			automataPathway(this);
 		}
 
 		circle.onDoubleClick = function(event){
