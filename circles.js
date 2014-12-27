@@ -20,7 +20,7 @@ $(function() {
 
 
 n = 5;
-fadeIncrement = 0.1;
+fadeIncrement = 0.08;
 
 // Install paper.js event handlers
 paper.install(window);
