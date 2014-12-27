@@ -19,8 +19,8 @@ $(function() {
 
 
 
-n = 5;
-fadeIncrement = 0.1;
+n = 8;
+fadeIncrement = 0.08;
 
 // Install paper.js event handlers
 paper.install(window);
@@ -107,7 +107,9 @@ function circles() {
 
 	// Create automata pathway from selected circle
 	function automataPathway(input) {
-		for (var k = 0; k < 3; k++){
+		//var oldAddresses = []
+		//var possibleAddresses = []
+		for (var k = 0; k < 4; k++){
 			
 			k1 = k;
 			k2 = -k;
@@ -116,16 +118,15 @@ function circles() {
 			var x1 = input.address_x + k1;
 			var y1 = input.address_y;
 			
-			var newCircle1 = project.getItem({
-				address_x: x1,
-				address_y: y1
-			})
 
-			if (x1 < 0) {
-				continue;
-			} else if (x1 >= nw) {
-				continue;
-			} else {
+
+			//if (x1 < 0) {
+			if ((x1 >= 0) && (x1 < nw)) {
+				//continue;
+				var newCircle1 = project.getItem({
+					address_x: x1,
+					address_y: y1
+				})				
 				automata(newCircle1,k);
 			}
 
@@ -133,16 +134,14 @@ function circles() {
 			var x2 = input.address_x + k2;
 			var y2 = input.address_y;
 			
-			var newCircle2 = project.getItem({
-				address_x: x2,
-				address_y: y2
-			})
+			
 
-			if (x2 < 0) {
-				continue;
-			} else if (x1 >= nw) {
-				continue;
-			} else {
+			if ((x2 >= 0) && (x2 < nw)) {
+				//continue;
+				var newCircle2 = project.getItem({
+					address_x: x2,
+					address_y: y2
+				})				
 				automata(newCircle2,k);
 			}
 
@@ -150,16 +149,14 @@ function circles() {
 			var x3 = input.address_x;
 			var y3 = input.address_y + k1;
 
-			var newCircle3 = project.getItem({
-				address_x: x3,
-				address_y: y3
-			})
 
-			if (y3 < 0) {
-				continue;
-			} else if (y2 >= nh) {
-				continue;
-			} else {
+
+			if ((y3 >= 0) && (y3 < nh)) {
+				//continue;
+				var newCircle3 = project.getItem({
+					address_x: x3,
+					address_y: y3
+				})				
 				automata(newCircle3,k);
 			}
 
@@ -167,16 +164,14 @@ function circles() {
 			var x4 = input.address_x;
 			var y4 = input.address_y + k2;
 
-			var newCircle4 = project.getItem({
-				address_x: x4,
-				address_y: y4
-			})
 
-			if (y4 < 0) {
-				continue;
-			} else if (y4 >= nh) {
-				continue;
-			} else {
+
+			if ((y4 >= 0) && (y4 < nh)) {
+				//continue;
+				var newCircle4 = project.getItem({
+					address_x: x4,
+					address_y: y4
+				})				
 				automata(newCircle4,k);
 			}
 		}	
