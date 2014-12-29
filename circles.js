@@ -105,20 +105,70 @@ function circles() {
 	}
 
 
+	// Choose a random next direction for the switchState pathway to move to
+	function randomPath(previousCircle, oldAdds) {
+
+		xA = []
+		yA = []
+		xD = []
+		yD = []
+		addressOK = 0;
+
+		while (addressOK == 0) {
+			// Choose a random axis to move in
+			if (Math.random() > 0.5) {
+				xA = 1;
+				yK = 0;
+			} else {
+				xA = 0;
+				yA = 1;
+			}
+
+			// Choose a random direction to move in
+			if (Math.random() > 0.5) {
+				xD = -1;
+				yD = -1;
+			} else {
+				xD = 1;
+				yD = 1;
+			}
+
+			deltaX = xA*xD;
+			deltaY = yA*yD;
+
+			newXAdd = previousCircle.address_x + deltaX;
+			newYAdd = previousCircle.address_y + deltaY;
+
+			checkAdd = [newXAdd, newYAdd];
+
+			checkAddIndex = oldAdds.findIndex(checkAdd);
+
+			if (checkAddIndex == -1) {
+				addressOK = 1;
+			}
+		}
+
+
+
+	}
+
+
 	// Create automata pathway from selected circle
 	function automataPathway(input) {
-		//var oldAddresses = []
-		//var possibleAddresses = []
+		var oldAddresses = []
+		var possibleAddresses = []
+		var firstAddress = [input.address_x, input.address_y];
+		oldAddresses.push(firstAddress);
+		switchState(input);
 		for (var k = 0; k < 4; k++){
 			
 			k1 = k;
 			k2 = -k;
 
-			// Create automata along +ve x axis
-			var x1 = input.address_x + k1;
-			var y1 = input.address_y;
-			
 
+			// Create automata along +ve x axis
+			var x1 = input.address_x + (k1);
+			var y1 = input.address_y;
 
 			//if (x1 < 0) {
 			if ((x1 >= 0) && (x1 < nw)) {
@@ -202,12 +252,15 @@ function circles() {
 					count += value;
 					neighbours.push(neighbour);
 				}
-			}			
-			if (count >= neighbours.length/2 && input.state == 1) {
-				switchState(input, delay)
-			} else if (count <= neighbours.length/2 && input.state == 0) {
-				switchState(input, delay)
-			}
+			}	
+
+			switchState(input, delay);			
+
+			//if (count >= neighbours.length/2 && input.state == 1) {
+			//	switchState(input, delay)
+			//} else if (count <= neighbours.length/2 && input.state == 0) {
+			//	switchState(input, delay)
+			//}
 	}	
 
 	// Record if the mouse is clicked
