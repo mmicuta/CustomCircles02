@@ -17,9 +17,20 @@ $(function() {
 	});
 });
 
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
 
 
-n = 8;
+
+n = 10;
+//fadeIncrement = 0.08;
 fadeIncrement = 0.08;
 
 // Install paper.js event handlers
@@ -71,7 +82,7 @@ function circles() {
 	// Switch state and fill of object
 	function switchState(input, delay) {
 		stepCount = 1/fadeIncrement;
-		fadeDelay = Math.floor(delay * (stepCount*(1/60)) * 1000);
+		fadeDelay = Math.floor(delay * (stepCount*(1/60)) * 1000)/2;
 		//fadeDelay = delay * (stepCount*(1/60)) * 1000;
 		setTimeout(function(){
 			if (input.state === 0) {
@@ -105,125 +116,132 @@ function circles() {
 	}
 
 
+
 	// Choose a random next direction for the switchState pathway to move to
-	function randomPath(previousCircle, oldAdds) {
+	function randomPath(oldX, oldY, oldAdds) {
 
-		xA = []
-		yA = []
-		xD = []
-		yD = []
-		addressOK = 0;
+		possiblePaths = [[1,0],[-1,0],[0,1],[0,-1]]
+		shuffleArray(possiblePaths);
+		
+		for (var z = 0; z < 12; z++) {
+			newPath = possiblePaths[z];
+			newX = oldX + newPath[0];
+			newY = oldY + newPath[1];
 
-		while (addressOK == 0) {
-			// Choose a random axis to move in
-			if (Math.random() > 0.5) {
-				xA = 1;
-				yK = 0;
+			if (newX < 0) {
+				continue;
+			} else if (newX >= nw) {
+				continue;
+			} else if (newY < 0) {
+				continue;
+			} else if (newY >= nh) {
+				continue;
+			}
+
+			newCoords = [newX,newY];
+
+			checkIndex = oldAdds.indexOf(newCoords);
+
+			if (checkIndex == -1) {
+				newXAdd = newX;
+				newYAdd = newY;
+				break;
 			} else {
-				xA = 0;
-				yA = 1;
+				newXAdd = 0;
+				newYAdd = 0;
 			}
 
-			// Choose a random direction to move in
-			if (Math.random() > 0.5) {
-				xD = -1;
-				yD = -1;
-			} else {
-				xD = 1;
-				yD = 1;
-			}
-
-			deltaX = xA*xD;
-			deltaY = yA*yD;
-
-			newXAdd = previousCircle.address_x + deltaX;
-			newYAdd = previousCircle.address_y + deltaY;
-
-			checkAdd = [newXAdd, newYAdd];
-
-			checkAddIndex = oldAdds.findIndex(checkAdd);
-
-			if (checkAddIndex == -1) {
-				addressOK = 1;
-			}
 		}
 
-
+		document.getElementById("test").innerText=checkIndex;
 
 	}
 
 
 	// Create automata pathway from selected circle
 	function automataPathway(input) {
+
 		var oldAddresses = []
 		var possibleAddresses = []
-		var firstAddress = [input.address_x, input.address_y];
+		var firstAddress = [input.address_x,input.address_y];
 		oldAddresses.push(firstAddress);
-		switchState(input);
+		switchState(input, 0);
+
 		for (var k = 0; k < 4; k++){
-			
-			k1 = k;
-			k2 = -k;
 
-
-			// Create automata along +ve x axis
-			var x1 = input.address_x + (k1);
-			var y1 = input.address_y;
-
-			//if (x1 < 0) {
-			if ((x1 >= 0) && (x1 < nw)) {
-				//continue;
-				var newCircle1 = project.getItem({
-					address_x: x1,
-					address_y: y1
-				})				
-				automata(newCircle1,k);
-			}
-
-			// Create automata along -ve x axis
-			var x2 = input.address_x + k2;
-			var y2 = input.address_y;
-			
+			oldX = input.address_x
+			oldY = input.address_y
 			
 
-			if ((x2 >= 0) && (x2 < nw)) {
-				//continue;
-				var newCircle2 = project.getItem({
-					address_x: x2,
-					address_y: y2
-				})				
-				automata(newCircle2,k);
+			if (k < 2) {
+
+				negXAdd = input.address_x - k;
+				posXAdd = input.address_x + k;
+				negYAdd = input.address_y - k;
+				posYAdd = input.address_y + k;
+
+				negX = project.getItem({
+					address_x: negXAdd,
+					address_y: oldY
+				})
+
+				posX = project.getItem({
+					address_x: posXAdd,
+					address_y: oldY
+				})
+
+				negY = project.getItem({
+					address_x: oldX,
+					address_y: negYAdd
+				})		
+
+				posY = project.getItem({
+					address_x: oldX,
+					address_y: posYAdd
+				})		
+
+				oldAddresses.push([negXAdd,oldY]);
+				oldAddresses.push([posXAdd,oldY]);
+				oldAddresses.push([oldX,negYAdd]);
+				oldAddresses.push([oldX,posYAdd]);
+
+			} else {
+
+				randomPath(negX.address_x, negX.address_y, oldAddresses);
+				negX = project.getItem({
+					address_x: newXAdd,
+					address_y: newYAdd
+				})
+				oldAddresses.push([newXAdd,newYAdd]);
+
+				randomPath(posX.address_x, posX.address_y, oldAddresses);
+				posX = project.getItem({
+					address_x: newXAdd,
+					address_y: newYAdd
+				})
+				oldAddresses.push([newXAdd,newYAdd]);
+
+				randomPath(negY.address_x, negY.address_y, oldAddresses);
+				negY = project.getItem({
+					address_x: newXAdd,
+					address_y: newYAdd
+				})
+				oldAddresses.push([newXAdd,newYAdd]);
+
+				randomPath(posY.address_x, posY.address_y, oldAddresses);
+				posY = project.getItem({
+					address_x: newXAdd,
+					address_y: newYAdd
+				})
+				oldAddresses.push([newXAdd,newYAdd]);
+
 			}
 
-			// Create automata along +ve y axis
-			var x3 = input.address_x;
-			var y3 = input.address_y + k1;
+			automata(negX, k);
+			automata(posX, k);
+			automata(negY, k);
+			automata(posY, k);
 
-
-
-			if ((y3 >= 0) && (y3 < nh)) {
-				//continue;
-				var newCircle3 = project.getItem({
-					address_x: x3,
-					address_y: y3
-				})				
-				automata(newCircle3,k);
-			}
-
-			// Create automata along -ve y axis
-			var x4 = input.address_x;
-			var y4 = input.address_y + k2;
-
-
-
-			if ((y4 >= 0) && (y4 < nh)) {
-				//continue;
-				var newCircle4 = project.getItem({
-					address_x: x4,
-					address_y: y4
-				})				
-				automata(newCircle4,k);
-			}
 		}	
 	};
 
@@ -254,13 +272,7 @@ function circles() {
 				}
 			}	
 
-			switchState(input, delay);			
-
-			//if (count >= neighbours.length/2 && input.state == 1) {
-			//	switchState(input, delay)
-			//} else if (count <= neighbours.length/2 && input.state == 0) {
-			//	switchState(input, delay)
-			//}
+			switchState(input, delay);
 	}	
 
 	// Record if the mouse is clicked
