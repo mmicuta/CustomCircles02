@@ -31,7 +31,7 @@ function shuffleArray(array) {
 
 n = 10;
 //fadeIncrement = 0.08;
-fadeIncrement = 0.08;
+fadeIncrement = 0.04;
 
 // Install paper.js event handlers
 paper.install(window);
@@ -122,8 +122,12 @@ function circles() {
 
 		possiblePaths = [[1,0],[-1,0],[0,1],[0,-1]]
 		shuffleArray(possiblePaths);
+
+		newXAdd = [];
+		newYAdd = [];
+		invalidCircle = 1;
 		
-		for (var z = 0; z < 12; z++) {
+		for (var z = 0; z < 4; z++) {
 			newPath = possiblePaths[z];
 			newX = oldX + newPath[0];
 			newY = oldY + newPath[1];
@@ -139,21 +143,39 @@ function circles() {
 			}
 
 			newCoords = [newX,newY];
+			checkIndex = -1
+			testVal = []
+			testVal2 = []
 
-			checkIndex = oldAdds.indexOf(newCoords);
-
-			if (checkIndex == -1) {
-				newXAdd = newX;
-				newYAdd = newY;
-				break;
-			} else {
-				newXAdd = 0;
-				newYAdd = 0;
+			for (var zz = 0; zz < oldAdds.length; zz++) {
+				checkAdd = []
+				checkAddX = oldAdds[zz].address_x
+				checkAddY = oldAdds[zz].address_y
+				testVal.push([checkAddX,checkAddY] + " ")
+				if ((newX == checkAddX)&&(newY == checkAddY)) {
+					checkIndex = 0
+					continue
+				}
 			}
 
+
+			testVal2.push([newX,newY] + " ")
+
+			//checkIndex = oldAdds.indexOf(newCoords);
+
+			if (checkIndex === -1) {
+				newXAdd = newX;
+				newYAdd = newY;
+				invalidCircle = 0;
+				break;
+			} else {
+				invalidCircle = 1;
+			}
 		}
 
-		document.getElementById("test").innerText=checkIndex;
+	//	document.getElementById("test").innerText=testVal;
+	//	document.getElementById("test2").innerText=testVal2;
+	//	document.getElementById("test3").innerText=checkAdd;
 
 	}
 
@@ -164,14 +186,13 @@ function circles() {
 		var oldAddresses = []
 		var possibleAddresses = []
 		var firstAddress = [input.address_x,input.address_y];
-		oldAddresses.push(firstAddress);
+		oldX = input.address_x
+		oldY = input.address_y
+		var firstAddressCoords = {address_x:oldX, address_y:oldY}
+		oldAddresses.push(firstAddressCoords);
 		switchState(input, 0);
 
-		for (var k = 0; k < 4; k++){
-
-			oldX = input.address_x
-			oldY = input.address_y
-			
+		for (var k = 0; k < 5; k++){
 
 			if (k < 2) {
 
@@ -179,6 +200,24 @@ function circles() {
 				posXAdd = input.address_x + k;
 				negYAdd = input.address_y - k;
 				posYAdd = input.address_y + k;
+
+				if (negXAdd < 0) {
+					continue;
+				} else if (negXAdd >= nw) {
+					continue;
+				} else if (posXAdd < 0) {
+					continue;
+				} else if (posXAdd >= nw) {
+					continue;
+				} else if (negYAdd < 0) {
+					continue;
+				} else if (negYAdd >= nh) {
+					continue;
+				} else if (posYAdd < 0) {
+					continue;
+				} else if (posYAdd >= nh) {
+					continue;
+				}
 
 				negX = project.getItem({
 					address_x: negXAdd,
@@ -198,49 +237,79 @@ function circles() {
 				posY = project.getItem({
 					address_x: oldX,
 					address_y: posYAdd
-				})		
+				}) 
 
-				oldAddresses.push([negXAdd,oldY]);
-				oldAddresses.push([posXAdd,oldY]);
-				oldAddresses.push([oldX,negYAdd]);
-				oldAddresses.push([oldX,posYAdd]);
+				negXCoords = {address_x:negXAdd, address_y:oldY}
+				posXCoords = {address_x:posXAdd, address_y:oldY}
+				negYCoords = {address_x:oldX, address_y:negYAdd}
+				posYCoords = {address_x:oldX, address_y:posYAdd}
+
+				oldAddresses.push(negXCoords);
+				oldAddresses.push(posXCoords);
+				oldAddresses.push(negYCoords);
+				oldAddresses.push(posYCoords);
+
+				automata(negX, k/2);
+				automata(posX, k/2);
+				automata(negY, k/2);
+				automata(posY, k/2);
 
 			} else {
 
 				randomPath(negX.address_x, negX.address_y, oldAddresses);
-				negX = project.getItem({
-					address_x: newXAdd,
-					address_y: newYAdd
-				})
-				oldAddresses.push([newXAdd,newYAdd]);
+				if (invalidCircle === 0) {
+					negX = project.getItem({
+						address_x: newXAdd,
+						address_y: newYAdd
+					})
+					newCoords = {address_x:newXAdd, address_y:newYAdd}
+					oldAddresses.push(newCoords);
+					automata(negX, k/2);			
+				}
+
 
 				randomPath(posX.address_x, posX.address_y, oldAddresses);
-				posX = project.getItem({
-					address_x: newXAdd,
-					address_y: newYAdd
-				})
-				oldAddresses.push([newXAdd,newYAdd]);
+				if (invalidCircle === 0) {
+					posX = project.getItem({
+						address_x: newXAdd,
+						address_y: newYAdd
+					})
+					newCoords = {address_x:newXAdd, address_y:newYAdd}
+					oldAddresses.push(newCoords);
+					automata(posX, k/2);
+				}
 
 				randomPath(negY.address_x, negY.address_y, oldAddresses);
-				negY = project.getItem({
-					address_x: newXAdd,
-					address_y: newYAdd
-				})
-				oldAddresses.push([newXAdd,newYAdd]);
+				if (invalidCircle === 0) {
+					negY = project.getItem({
+						address_x: newXAdd,
+						address_y: newYAdd
+					})
+					newCoords = {address_x:newXAdd, address_y:newYAdd}
+					oldAddresses.push(newCoords);
+					automata(negY, k/2);
+				}
 
 				randomPath(posY.address_x, posY.address_y, oldAddresses);
-				posY = project.getItem({
-					address_x: newXAdd,
-					address_y: newYAdd
-				})
-				oldAddresses.push([newXAdd,newYAdd]);
+				if (invalidCircle === 0) {
+					posY = project.getItem({
+						address_x: newXAdd,
+						address_y: newYAdd
+					})
+					newCoords = {address_x:newXAdd, address_y:newYAdd}
+					oldAddresses.push(newCoords);
+					automata(posY, k/2);
+				}
 
 			}
 
-			automata(negX, k);
-			automata(posX, k);
-			automata(negY, k);
-			automata(posY, k);
+			
+			
+			
+			
+
+		//	document.getElementById("test").innerText=oldAddresses[0].address_x;
+		//	document.getElementById("test2").innerText=oldAddresses[0].address_y;
 
 		}	
 	};
@@ -327,6 +396,7 @@ function circles() {
 		// Mouse event based behaviour
 		circle.onMouseEnter = function(event){		
 			fadeFill(this);
+		//	document.getElementById("test").innerText=[this.address_x,this.address_y];
 		}
 
 		circle.onMouseLeave = function(event){		
