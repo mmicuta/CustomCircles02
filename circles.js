@@ -28,10 +28,9 @@ function shuffleArray(array) {
 }
 
 
-
 n = 10;
 //fadeIncrement = 0.08;
-fadeIncrement = 0.04;
+fadeIncrement = 0.08;
 
 // Install paper.js event handlers
 paper.install(window);
@@ -45,8 +44,11 @@ function circles() {
 	paper.clear(canvas);
 
 	// Define canvas dimensions based on view window width and height
-	var canvasHeight = $(window).innerHeight();
-	var canvasWidth = $(window).innerWidth();
+	//var canvasHeight = $(window).innerHeight()-250;
+	//var canvasWidth = $(window).innerWidth();
+	//var canvasWidth = canvasHeight * (3/5);
+	var canvasWidth = $(".canvascontainer").innerWidth();
+	var canvasHeight = canvasWidth * 1.618;
 
 	// Define height and width divisions by screen proportions
 	if (canvasHeight >= canvasWidth) {
@@ -88,21 +90,23 @@ function circles() {
 			if (input.state === 0) {
 				input.fadeToggle = 2;
 				input.state = 1;
+				input.strokeWidth = 0.5;
 			} else {
 				input.fadeToggle = 1;
 				input.state = 0;
+				input.strokeWidth = 0.5;
 			}
 		}, fadeDelay);
 	}
 
 	// Switch border style
 	function switchStroke(input) {
-		if (input.borderState === 0) {
-			input.strokeColor = 1;
-			input.borderState = 1;
-		} else {
+		if (input.borderState === 1) {
 			input.strokeColor = 0;
 			input.borderState = 0;
+		} else if (input.borderState === 0) {
+			input.strokeColor = 1;
+			input.borderState = 1;
 		}
 	}
 
@@ -114,6 +118,41 @@ function circles() {
 			input.fillColor.lightness = 0.8;
 		}
 	}
+
+	// Change opacity of object based on its colour
+	function scaleStroke(input) {
+		if (input.state === 0) {
+			input.strokeWidth = 2;
+		} else {
+			input.strokeWidth = 0.1;
+		}
+	}
+
+	// Invert fill of all circles
+	function invertFill(input) {
+		for (var i = 0; i < input.children.length; i++) {
+			switchState(input.children[i],0);
+		}
+	}
+
+	// Clear fill to all white
+	function clearFill(input) {
+		for (var i = 0; i < input.children.length; i++) {
+			if (input.children[i].state != 1) {
+				switchState(input.children[i]);
+			}
+		}
+	}
+
+	// Clear fill to all white
+	function randomFill(input) {
+		for (var i = 0; i < input.children.length; i++) {
+			if (Math.random()<0.5) {
+				switchState(input.children[i]);
+			}
+		}
+	}
+
 
 
 
@@ -192,7 +231,7 @@ function circles() {
 		oldAddresses.push(firstAddressCoords);
 		switchState(input, 0);
 
-		for (var k = 0; k < 5; k++){
+		for (var k = 0; k < (Math.min(nw,nh)/2); k++){
 
 			if (k < 2) {
 
@@ -303,11 +342,6 @@ function circles() {
 
 			}
 
-			
-			
-			
-			
-
 		//	document.getElementById("test").innerText=oldAddresses[0].address_x;
 		//	document.getElementById("test2").innerText=oldAddresses[0].address_y;
 
@@ -371,8 +405,6 @@ function circles() {
 	// Draw circles from point coordinates and radius
 	circleGroup = new Group();
 	circleGroup.borderState = 1;
-	circleGroup.strokeWidth = 1;
-
 
 	for (var i = 0; i < centroidsArray.length; i++) {
 		var centroid = centroidsArray[i]
@@ -385,36 +417,35 @@ function circles() {
 		circle.fadeToggle = 0;
 		circle.fillColor = {hue: 0, saturation: 0, lightness: 0};
 		circle.strokeColor = {hue: 0, saturation: 0, lightness: 0};
+		circle.strokeWidth = 0.5;
 		if (circle.state === 0) {
 		} else {
 			circle.fillColor.lightness = 1;
 			circle.state = 1;
 		}
 		circleGroup.addChild(circle);
+		circleGroup.borderState = 1;
 
 
 		// Mouse event based behaviour
-		circle.onMouseEnter = function(event){		
-			fadeFill(this);
+		circle.onMouseEnter = function(){		
+			scaleStroke(this);
 		//	document.getElementById("test").innerText=[this.address_x,this.address_y];
 		}
 
-		circle.onMouseLeave = function(event){		
+		circle.onMouseLeave = function(){		
 			if (mouse === 0) {
 				switchState(this,0);
+				this.strokeWidth = 0.5;
 			} else if (this.state === 0) {
-				this.fillColor.lightness = 0;
+				this.strokeWidth = 0.5;
 			} else {
-				this.fillColor.lightness = 1;
+				this.strokeWidth = 0.5;
 			}
 		}		
 
-		circle.onClick = function(event){
+		circle.onClick = function(){
 			automataPathway(this);
-		}
-
-		circle.onDoubleClick = function(event){
-			switchStroke(circleGroup);
 		}
 
 		view.onFrame = function(event){
@@ -451,26 +482,45 @@ function circles() {
 					}
 				}
 			}
-			
-
 			fadeTo(fadeIncrement);
 		}
 
 	};
 
+	$("#bdr").click(function() {
+		switchStroke(circleGroup);
+	});
+
+	$("#inv").click(function() {
+		invertFill(circleGroup);
+	});
+
+	$("#clr").click(function() {
+		clearFill(circleGroup);
+	});
+
+	$("#rnd").click(function() {
+		randomFill(circleGroup);
+	});
+
 	paper.view.draw();
+
+
 
 };
 
 
+
 //Setup SVG Canvas
 $(document).ready(function() {
+
 	circles();
+
+	
+
 });
 
 //Resize canvas to match window size
 $(window).resize(function() {
 	circles();
 });
-
-

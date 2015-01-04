@@ -8,7 +8,7 @@
 	<!-- Basic Page Needs
   ================================================== -->
 	<meta charset="utf-8">
-	<title>Your Page Title Here :)</title>
+	<title>BSPKT</title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 
@@ -18,9 +18,7 @@
 
 	<!-- CSS
   ================================================== -->
-	<link rel="stylesheet" href="stylesheets/base.css">
-	<link rel="stylesheet" href="stylesheets/skeleton.css">
-	<link rel="stylesheet" href="stylesheets/layout.css">
+	<link rel="stylesheet" href="css/bootstrap.css">
 	<link rel="stylesheet" href="jquery-ui.css">
 	<link rel="stylesheet" href="custom.css">
 
@@ -39,23 +37,52 @@
 	<script src="jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="jquery-ui.js" type="text/javascript" charset="utf-8"></script>
 	<script src="paper.js" type="text/javascript" charset="utf-8"></script>
-	<script src="raphael.js" type="text/javascript" charset="utf-8"></script>
+	<script src="jquery.knob.js" type="text/javascript" charset="utf-8"></script>
 	<script src="circles.js" type="text/javascript" charset="utf-8"></script>
 
 </head>
 <body>
-	<div id="test"></div>
-	<div id="test2"></div>
-	<div id="test3"></div>
-	<canvas id="canvas01"></canvas>
+	
+	
 	<div class="container">
-		<!--<div class="sixteen columns ui">
-			<div class ="six columns offset-by-five ">
-				<div id="slider"></div>
+		<div class="row margin-bottom-30px">
+			<div class="col-md-3">
 			</div>
-		</div>-->
-	</div>
+			<div class="col-md-6 header"><img class="logo" src="img/logo.svg"><div id="test"></div><div id="test2"></div><div id="test3"></div></div>
+		</div>
+		<div class="row margin-bottom-30px">
+			<div class="col-md-3">
+			</div>
+			<div class="col-md-6">
+				<div class="canvascontainer">
+					<canvas id="canvas01"></canvas>
+				</div>
+			</div>
+			<div class="col-md-1">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-2 col-md-4">
+			</div>
+			<div class="col-xs-2 col-md-1">
+				<div><img src="img/icon_clr.svg" id="clr" class="circleDiv"></div>
+			</div>
+			<div class="col-xs-2 col-md-1">
+				<div><img src="img/icon_inv.svg" id="inv" class="circleDiv"></div>
+			</div>
+			<div class="col-xs-2 col-md-1">
+				<div><img src="img/icon_rnd.svg" id="rnd" class="circleDiv"></div>
+			</div>
+			<div class="col-xs-2 col-md-1">
+				<div><img src="img/icon_bnd.svg" id="bdr" class="circleDiv"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-5 footer">
 
+			</div>
+		</div>
+	</div>
 
 </body>
 </html>
