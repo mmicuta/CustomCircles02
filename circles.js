@@ -44,11 +44,12 @@ function circles() {
 	paper.clear(canvas);
 
 	// Define canvas dimensions based on view window width and height
-	//var canvasHeight = $(window).innerHeight()-250;
+	//var canvasHeight = $(window).innerHeight()-150;
 	//var canvasWidth = $(window).innerWidth();
 	//var canvasWidth = canvasHeight * (3/5);
 	var canvasWidth = $(".canvascontainer").innerWidth();
 	var canvasHeight = canvasWidth * 1.618;
+	//var canvasWidth = canvasHeight * (1/1.618);
 
 	// Define height and width divisions by screen proportions
 	if (canvasHeight >= canvasWidth) {
@@ -147,7 +148,7 @@ function circles() {
 	// Clear fill to all white
 	function randomFill(input) {
 		for (var i = 0; i < input.children.length; i++) {
-			if (Math.random()<0.5) {
+			if (Math.random()<0.7) {
 				switchState(input.children[i]);
 			}
 		}
@@ -522,5 +523,5 @@ $(document).ready(function() {
 
 //Resize canvas to match window size
 $(window).resize(function() {
-	circles();
+	//circles();
 });

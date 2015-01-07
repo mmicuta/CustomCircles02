@@ -40,7 +40,9 @@ body {
 .circleDiv {
 	margin-left: auto;
 	margin-right: auto;
-	width: 100%;
+	padding-right: 1%;
+	padding-left: 1%;
+	width: 22%;
 	border-radius: 50%;
 	position: relative;
 	border-style: solid;
@@ -56,11 +58,11 @@ body {
 }
 
 .circleDiv:hover {
-	border-color: hsla(0,100%,0%,0.1);
+	border-color: hsla(0,100%,0%,0.3);
 }
 
 .circleDiv:active {
-	border-color: hsla(0,100%,0%,0.5);
+	border-color: hsla(0,100%,0%,0.8);
 }
 
 .circleDiv img {
@@ -75,6 +77,10 @@ body {
 .header {
 }
 
+.margin-bottom-100px {
+	margin-bottom: 100px; 
+}
+
 .margin-bottom-50px {
 	margin-bottom: 50px; 
 }
@@ -83,11 +89,14 @@ body {
 	margin-bottom: 0px; 
 }
 
-
-
 .logo img {
 	margin-left: auto;
 	margin-right: auto;
 	width: 100%;
 	height: auto;
+}
+
+.align-bottom {
+	display: table-cell;
+	vertical-align: bottom;
 }
