@@ -148,9 +148,16 @@ function circles() {
 	// Clear fill to all white
 	function randomFill(input) {
 		for (var i = 0; i < input.children.length; i++) {
-			if (Math.random()<0.7) {
-				switchState(input.children[i]);
+			if (input.children[i].state === 1) {
+				if (Math.random()<0.75) {
+					switchState(input.children[i]);
+				}
+			} else {
+				if (Math.random()>0.75) {
+					switchState(input.children[i]);
+				}
 			}
+			
 		}
 	}
 
@@ -405,7 +412,7 @@ function circles() {
 
 	// Draw circles from point coordinates and radius
 	circleGroup = new Group();
-	circleGroup.borderState = 1;
+	circleGroup.borderState = 0;
 
 	for (var i = 0; i < centroidsArray.length; i++) {
 		var centroid = centroidsArray[i]
@@ -425,7 +432,6 @@ function circles() {
 			circle.state = 1;
 		}
 		circleGroup.addChild(circle);
-		circleGroup.borderState = 1;
 
 
 		// Mouse event based behaviour
