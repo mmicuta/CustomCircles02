@@ -44,11 +44,11 @@ function circles() {
 	paper.clear(canvas);
 
 	// Define canvas dimensions based on view window width and height
-	//var canvasHeight = $(window).innerHeight()-150;
+	var canvasHeight = $(window).innerHeight()-150;
 	//var canvasWidth = $(window).innerWidth();
-	//var canvasWidth = canvasHeight * (3/5);
-	var canvasWidth = $(".canvascontainer").innerWidth();
-	var canvasHeight = canvasWidth * 1.618;
+	var canvasWidth = canvasHeight * (3/5);
+	//var canvasWidth = $(".canvascontainer").innerWidth();
+	//var canvasHeight = canvasWidth * 1.618;
 	//var canvasWidth = canvasHeight * (1/1.618);
 
 	// Define height and width divisions by screen proportions
@@ -145,15 +145,15 @@ function circles() {
 		}
 	}
 
-	// Clear fill to all white
+	// Random fill x% of cells
 	function randomFill(input) {
 		for (var i = 0; i < input.children.length; i++) {
 			if (input.children[i].state === 1) {
-				if (Math.random()<0.75) {
+				if (Math.random()<0.25) {
 					switchState(input.children[i]);
 				}
 			} else {
-				if (Math.random()>0.75) {
+				if (Math.random()>0.25) {
 					switchState(input.children[i]);
 				}
 			}
