@@ -1,31 +1,6 @@
 // UI Controls
-$(function() {
-	$( "#slider" ).slider({
-		value: 10,
-		min: 5,
-		max: 20,
-		step: 1,
-		slide: function(){
-			//document.getElementById("test").innerText=$("#slider").slider("value");
-			n = $("#slider").slider("value");
-			circles();
-		},
-		change: function(event, ui){
-			//var n = $("#slider").slider("value");
-			//circles();
-		}
-	});
-});
 
-function shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-    return array;
-}
+
 
 
 n = 10;
@@ -145,15 +120,15 @@ function circles() {
 		}
 	}
 
-	// Clear fill to all white
+	// Random fill x% of cells
 	function randomFill(input) {
 		for (var i = 0; i < input.children.length; i++) {
 			if (input.children[i].state === 1) {
-				if (Math.random()<0.75) {
+				if (Math.random()<0.25) {
 					switchState(input.children[i]);
 				}
 			} else {
-				if (Math.random()>0.75) {
+				if (Math.random()>0.25) {
 					switchState(input.children[i]);
 				}
 			}
@@ -516,6 +491,33 @@ function circles() {
 
 };
 
+$(function () {
+	$("#slider").slider({
+		value: 10,
+		min: 5,
+		max: 20,
+		step: 1,
+		slide: function () {
+			//document.getElementById("test").innerText=$("#slider").slider("value");
+			var n = $("#slider").slider("value");
+			circles();
+		},
+		change: function(event, ui){
+			//var n = $("#slider").slider("value");
+			//circles();
+		}
+	});
+});
+
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
 
 
 //Setup SVG Canvas
@@ -529,5 +531,5 @@ $(document).ready(function() {
 
 //Resize canvas to match window size
 $(window).resize(function() {
-	//circles();
+	circles();
 });
