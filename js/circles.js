@@ -1,11 +1,15 @@
 // UI Controls
 
+<<<<<<< HEAD:js/circles.js
+
+=======
+>>>>>>> master:js/circles.js
 
 
 
-n = 10;
+var n = 10;
 //fadeIncrement = 0.08;
-fadeIncrement = 0.08;
+var fadeIncrement = 0.08;
 
 // Install paper.js event handlers
 paper.install(window);
@@ -45,7 +49,7 @@ function circles() {
 	var w1 = canvasWidth;
 	var h2 = canvasHeight - gw;
 	var w2 = canvasWidth - gw;
-	var radius = (0.85*gw)/2;
+	var radius = (0.85*gw) / 2;
 
 	// Adjust canvas size to window size and centre it
 	canvas.height = h1;
@@ -60,8 +64,8 @@ function circles() {
 	// Switch state and fill of object
 	function switchState(input, delay) {
 		stepCount = 1/fadeIncrement;
-		fadeDelay = Math.floor(delay * (stepCount*(1/60)) * 1000)/2;
-		//fadeDelay = delay * (stepCount*(1/60)) * 1000;
+		fadeDelay = Math.floor(delay * (stepCount*(1 / 60)) * 1000) / 2;
+		//fadeDelay = delay * (stepCount*(1 / 60)) * 1000;
 		setTimeout(function(){
 			if (input.state === 0) {
 				input.fadeToggle = 2;
