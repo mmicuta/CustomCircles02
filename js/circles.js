@@ -1,31 +1,6 @@
 // UI Controls
-$(function() {
-	$( "#slider" ).slider({
-		value: 10,
-		min: 5,
-		max: 20,
-		step: 1,
-		slide: function(){
-			//document.getElementById("test").innerText=$("#slider").slider("value");
-			n = $("#slider").slider("value");
-			circles();
-		},
-		change: function(event, ui){
-			//var n = $("#slider").slider("value");
-			//circles();
-		}
-	});
-});
 
-function shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-    return array;
-}
+
 
 
 n = 10;
@@ -44,11 +19,11 @@ function circles() {
 	paper.clear(canvas);
 
 	// Define canvas dimensions based on view window width and height
-	var canvasHeight = $(window).innerHeight()-150;
+	//var canvasHeight = $(window).innerHeight()-150;
 	//var canvasWidth = $(window).innerWidth();
-	var canvasWidth = canvasHeight * (3/5);
-	//var canvasWidth = $(".canvascontainer").innerWidth();
-	//var canvasHeight = canvasWidth * 1.618;
+	//var canvasWidth = canvasHeight * (3/5);
+	var canvasWidth = $(".canvascontainer").innerWidth();
+	var canvasHeight = canvasWidth * 1.618;
 	//var canvasWidth = canvasHeight * (1/1.618);
 
 	// Define height and width divisions by screen proportions
@@ -516,6 +491,33 @@ function circles() {
 
 };
 
+$(function () {
+	$("#slider").slider({
+		value: 10,
+		min: 5,
+		max: 20,
+		step: 1,
+		slide: function () {
+			//document.getElementById("test").innerText=$("#slider").slider("value");
+			var n = $("#slider").slider("value");
+			circles();
+		},
+		change: function(event, ui){
+			//var n = $("#slider").slider("value");
+			//circles();
+		}
+	});
+});
+
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
 
 
 //Setup SVG Canvas
@@ -529,5 +531,5 @@ $(document).ready(function() {
 
 //Resize canvas to match window size
 $(window).resize(function() {
-	//circles();
+	circles();
 });

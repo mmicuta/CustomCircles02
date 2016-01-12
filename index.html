@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>tellate</title>
+    <title>gridit</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.css" rel="stylesheet">
@@ -34,68 +34,61 @@
 
   </head>
   <body>
-    	<!-- Navigation -->
-		<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">tellate</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="#">About</a>
-                    </li>
-                    <li>
-                        <a href="#">Services</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+	  <!-- Fixed navbar -->
+	    <nav class="navbar navbar-tellate navbar-static-top">
+	      <div class="container">
+	        <div class="navbar-header">
+	          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	            <span class="sr-only">Toggle navigation</span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	          </button>
+	          <a class="navbar-brand" href="#">gridit</a>
+	        </div>
+	        <!-- Future Navbar
+            <div id="navbar" class="collapse navbar-collapse navbar-right">
+	          <ul class="nav navbar-nav">
+                <li><a href="#">Cart</a></li>
+	            <li><a href="#">Contact</a></li>
+	            <li><button class="btn btn-primary navbar-btn">LOGIN</button></li>
+	          </ul>
+            </div>--><!--/.nav-collapse -->
+	      </div>
+	    </nav>
    	<!-- Main Contents and Paper Canvas -->
     <div class="container">
 		<div class="row">
+            <div class="col-md-1"></div>
+            
 			<div>
-				<div class="col-md-1">
-					<button class="btn btn-default"><img src="img/icon_clr.svg" id="clr" class="circleDiv"></button>
+				<div class="col-xs-4 col-md-1">
+					<div><img src="img/icon_clr.svg" id="clr" class="circleDiv"></div>
+                    <div><img src="img/icon_bnd.svg" id="bdr" class="circleDiv"></div>
 				</div>
-				<div class="col-md-1">
-					<button class="btn btn-default"><img src="img/icon_inv.svg" id="inv" class="circleDiv"></button>
+				<div class="col-xs-4 col-md-1">
+					<div><img src="img/icon_inv.svg" id="inv" class="circleDiv"></div>
+                    <div><img src="img/placeholder.svg" id="" class="circleDiv"></div>
 				</div>
-				<div class="col-md-1">
-					<button class="btn btn-default"><img src="img/icon_rnd.svg" id="rnd" class="circleDiv"></button>
-				</div>
-				<div class="col-md-1">
-					<button class="btn btn-default"><img src="img/icon_bnd.svg" id="bdr" class="circleDiv"></button>
+				<div class="col-xs-4 col-md-1">
+					<div><img src="img/icon_rnd.svg" id="rnd" class="circleDiv"></div>
+                    <div><img src="img/placeholder.svg" id="" class="circleDiv"></div>
 				</div>
 			</div>
 
-			<div class="col-md-4"></div>
+			<div class="col-md-1"></div>
 
-			<div class="col-md-4">
+			<div class="col-xs-12 col-md-6">
 				<div class="canvascontainer">
 					<canvas id="canvas01"></canvas>
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-12">
-			<p>Copyright Marc Micuta 2016</p>
-			</div>
-		</div>
 	</div>
+	<footer class="footer">
+      <div class="container">
+        <p class="text-muted">Copyright Marc Micuta 2016</p>
+      </div>
+    </footer>
   </body>
 </html>
