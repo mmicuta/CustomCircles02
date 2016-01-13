@@ -1,9 +1,5 @@
 // UI Controls
 
-<<<<<<< HEAD:js/circles.js
-
-=======
->>>>>>> master:js/circles.js
 
 
 
@@ -535,5 +531,5 @@ $(document).ready(function() {
 
 //Resize canvas to match window size
 $(window).resize(function() {
-	circles();
+	//circles();
 });
