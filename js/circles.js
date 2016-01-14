@@ -1,9 +1,28 @@
 // UI Controls
+$(function() {
+	$( "#slider_count" ).slider({
+		value: 10,
+		min: 5,
+		max: 20,
+		step: 1,
+		slide: function(){
+			//document.getElementById("test").innerText=$("#slider").slider("value");
+			n = $("#slider_count").slider("value");
+			circles();
+		},
+		change: function(event, ui){
+			//var n = $("#slider").slider("value");
+			//circles();
+		}
+	});
+});
 
-
-
-
-var n = 10;
+n = 10;
+//n = $( '#slider_count' ).slider( "option", "value" );
+//n = $( "#slider_count" ).on( "slidestop", function( event, ui ) {} );
+console.log(typeof "test");
+console.log(typeof n);
+console.log(typeof $( "#slider_count" ).on( "slidestop", function( event, ui ) {} ));
 //fadeIncrement = 0.08;
 var fadeIncrement = 0.08;
 
@@ -123,12 +142,12 @@ function circles() {
 	// Random fill x% of cells
 	function randomFill(input) {
 		for (var i = 0; i < input.children.length; i++) {
-			if (input.children[i].state === 1) {
-				if (Math.random()<0.25) {
+			if (input.children[i].state === 0) {
+				if (Math.random()<0.05) {
 					switchState(input.children[i]);
 				}
 			} else {
-				if (Math.random()>0.25) {
+				if (Math.random()>0.05) {
 					switchState(input.children[i]);
 				}
 			}
@@ -376,7 +395,7 @@ function circles() {
 	var centroidsArray = []
 	for (var i = 0; i <= nw-1; i++) {
 		for (var j = 0; j <= nh-1; j++) {
-			var centroid = new paper.Point({state:0});
+			var centroid = new paper.Point({state:1});
 			centroid.x = ((w1-w2)/2)+gw*i+(w3/2);
 			centroid.y = ((h1-h2)/2)+gw*j+(h3/2);
 			centroid.address_x = i;
@@ -398,13 +417,13 @@ function circles() {
 		circle.address_x = centroidsArray[i].address_x;
 		circle.address_y = centroidsArray[i].address_y;
 		circle.fadeToggle = 0;
-		circle.fillColor = {hue: 0, saturation: 0, lightness: 0};
+		circle.fillColor = {hue: 0, saturation: 0, lightness: 1};
 		circle.strokeColor = {hue: 0, saturation: 0, lightness: 0};
 		circle.strokeWidth = 0.5;
-		if (circle.state === 0) {
+		if (circle.state === 1) {
 		} else {
-			circle.fillColor.lightness = 1;
-			circle.state = 1;
+			circle.fillColor.lightness = 0;
+			circle.state = 0;
 		}
 		circleGroup.addChild(circle);
 
@@ -522,14 +541,14 @@ function shuffleArray(array) {
 
 //Setup SVG Canvas
 $(document).ready(function() {
-
-	circles();
-
-	
-
+    circles();	
 });
 
 //Resize canvas to match window size
 $(window).resize(function() {
 	//circles();
 });
+
+$( "#slider_count" ).on( "slidechange", function( event, ui ) {
+    circles();
+} );
