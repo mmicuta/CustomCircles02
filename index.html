@@ -19,18 +19,18 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <!-- Favicons -->
-	<link rel="shortcut icon" href="images/favicon.ico">
-	<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    <!-- Favicons 
+	<link rel="shortcut icon" href="img/favicon.ico">
+	<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="img/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="img/apple-touch-icon-114x114.png">-->
 
 	<!-- Scripts -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="js/jquery-ui.js" type="text/javascript"></script>
+    <script src="js/jquery-ui.js" type="text/javascript"></script>
 	<script src="js/paper.js" type="text/javascript"></script>
-	<script src="js/circles.js" type="text/javascript"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<script src="js/circles.js" type="text/javascript"></script>
 
   </head>
   <body>
@@ -58,23 +58,42 @@
 	    </nav>
    	<!-- Main Contents and Paper Canvas -->
     <div class="container">
+        
 		<div class="row">
+            
             <div class="col-md-1"></div>
             
-			<div>
-				<div class="col-xs-4 col-md-1">
-					<div><img src="img/icon_clr.svg" id="clr" class="circleDiv"></div>
-                    <div><img src="img/icon_bnd.svg" id="bdr" class="circleDiv"></div>
-				</div>
-				<div class="col-xs-4 col-md-1">
-					<div><img src="img/icon_inv.svg" id="inv" class="circleDiv"></div>
-                    <div><img src="img/placeholder.svg" id="" class="circleDiv"></div>
-				</div>
-				<div class="col-xs-4 col-md-1">
-					<div><img src="img/icon_rnd.svg" id="rnd" class="circleDiv"></div>
-                    <div><img src="img/placeholder.svg" id="" class="circleDiv"></div>
-				</div>
-			</div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>INTERFACE CONTROLS</h4>
+                    </div>
+                    <div class="col-xs-3 col-md-3">
+                        <div><img src="img/icon_clr.svg" id="clr" class="circleDiv"></div>
+                    </div>
+                    <div class="col-xs-3 col-md-3">
+                        <div><img src="img/icon_inv.svg" id="inv" class="circleDiv"></div>
+                    </div>
+                    <div class="col-xs-3 col-md-3">
+                        <div><img src="img/icon_rnd.svg" id="rnd" class="circleDiv"></div>
+                    </div>
+                    <div class="col-xs-3 col-md-3">
+                        <div><img src="img/icon_bnd.svg" id="bdr" class="circleDiv"></div>
+                    </div>
+                    <div class="col-md-12">
+                        <h4>GRID DENSITY</h4>
+                    </div>
+                    <div class="col-md-12">
+                        <div id="slider_count"></div>
+                    </div>
+                     <div class="col-md-12">
+                        <h4>COLOUR</h4>
+                    </div>
+                    <div class="col-md-12">
+                        <div id="slider_color"></div>
+                    </div>
+                </div>
+            </div>
 
 			<div class="col-md-1"></div>
 
@@ -83,7 +102,9 @@
 					<canvas id="canvas01"></canvas>
 				</div>
 			</div>
+            
 		</div>
+        
 	</div>
 	<footer class="footer">
       <div class="container">
