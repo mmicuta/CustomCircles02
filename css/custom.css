@@ -80,7 +80,7 @@ body {
     width: 100%;
     /* Set the fixed height of the footer here */
     height: 60px;
-    background-color: #FFFAFA; 
+    background-color: #ffffff; 
     border: 1px solid transparent;
     border-color: #e7e7e7;
 }
@@ -105,7 +105,7 @@ code {
 
 /* Bootstrap custom navbar */
 .navbar-tellate {
-  background-color: #FFFAFA;
+  background-color: #ffffff;
   border-color: #e7e7e7;
 }
 .navbar-tellate .navbar-brand {
