@@ -10,7 +10,9 @@
     <!-- Bootstrap -->
     <link href="css/bootstrap.css" rel="stylesheet">
 	<link href="css/jquery-ui.css" rel="stylesheet">
+    <link href="css/bootstrap.colorpickersliders.css" rel="stylesheet">
 	<link href="css/custom.css" rel="stylesheet">
+      
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -30,7 +32,21 @@
     <script src="js/jquery-ui.js" type="text/javascript"></script>
 	<script src="js/paper.js" type="text/javascript"></script>
 	<script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.colorpickersliders.js"></script>
 	<script src="js/circles.js" type="text/javascript"></script>
+      
+    <script>
+        $("#hslflat").ColorPickerSliders({
+            color: "rgb(36, 170, 242)",
+            flat: true,
+            order: {
+                hsl: 1,
+                cie: 2,
+                preview: 3
+            }
+        });
+    </script>
+          
 
   </head>
   <body>
@@ -90,7 +106,7 @@
                         <h4>COLOUR</h4>
                     </div>
                     <div class="col-md-12">
-                        <div id="slider_color"></div>
+                        <div id="hslflat"></div>
                     </div>
                 </div>
             </div>

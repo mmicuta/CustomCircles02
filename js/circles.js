@@ -17,12 +17,14 @@ $(function() {
 	});
 });
 
+
+
 n = 10;
 //n = $( '#slider_count' ).slider( "option", "value" );
 //n = $( "#slider_count" ).on( "slidestop", function( event, ui ) {} );
-console.log(typeof "test");
-console.log(typeof n);
-console.log(typeof $( "#slider_count" ).on( "slidestop", function( event, ui ) {} ));
+//console.log(typeof "test");
+//console.log(typeof n);
+//console.log(typeof $( "#slider_count" ).on( "slidestop", function( event, ui ) {} ));
 //fadeIncrement = 0.08;
 var fadeIncrement = 0.08;
 
