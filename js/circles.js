@@ -3,7 +3,8 @@ paper.install(window);
 
 // Variable Declarations
 var n = 10;
-var fadeIncrement = 0.08;
+var fadeIncrement = 0.1;
+var lightnessLimit = 0.5;
 
 var paperHue = Math.floor(Math.random() * 360);
 console.log(paperHue);
@@ -12,7 +13,7 @@ console.log(paperHue);
 // Slider to control grid density
 $(function() {
 	$( "#slider_count" ).slider({
-		value: 10,
+		value: paperHue,
 		min: 5,
 		max: 20,
 		step: 1,
@@ -127,9 +128,10 @@ function randomFill(input) {
 }
 
 // Clear fill to all white
-function colorHue(input) {
+function changeHue(input) {
     for (var i = 0; i < input.children.length; i++) {
         input.children[i].fillColor.hue = paperHue;
+        //input.children[i].fillColor.hue = $("#slider_hue").slider("value");;
     }
     //input.fillColor.hue = paperHue;
 }
@@ -357,12 +359,7 @@ function circles() {
 					oldAddresses.push(newCoords);
 					automata(posY, k/2);
 				}
-
 			}
-
-		//	document.getElementById("test").innerText=oldAddresses[0].address_x;
-		//	document.getElementById("test2").innerText=oldAddresses[0].address_y;
-
 		}	
 	};
 
@@ -433,12 +430,13 @@ function circles() {
 		circle.address_x = centroidsArray[i].address_x;
 		circle.address_y = centroidsArray[i].address_y;
 		circle.fadeToggle = 0;
-		circle.fillColor = {hue: paperHue, saturation: 1, lightness: 1};
+		circle.fillColor = {hue: paperHue, saturation: 1, lightness: lightnessLimit};
 		circle.strokeColor = {hue: 0, saturation: 0, lightness: 0};
 		circle.strokeWidth = 0.5;
 		if (circle.state === 1) {
+            
 		} else {
-			circle.fillColor.lightness = 0;
+			circle.fillColor.lightness = lightnessLimit;
 			circle.state = 0;
 		}
 		circleGroup.addChild(circle);
@@ -447,7 +445,6 @@ function circles() {
 		// Mouse event based behaviour
 		circle.onMouseEnter = function(){		
 			scaleStroke(this);
-		//	document.getElementById("test").innerText=[this.address_x,this.address_y];
 		}
 
 		circle.onMouseLeave = function(){		
@@ -476,23 +473,17 @@ function circles() {
 				fadeStart = (delay * stepCount) + eventStart;
 				stepSize = [];
 
-				//document.getElementById("test").innerText=delay;
-				
-				//document.getElementById("test").innerText=fadeStart;
-
 				if (event.count >= fadeStart) {
 					stepSize = 0;
 				} else {
 					stepSize = increment;
 				}
 
-				//timeInterval = delay * ((1/fadeIncrement) * (1/60)) * 1000;
-				//document.getElementById("test").innerText=timeInterval;
 				for (var i = 0; i < circleGroup.children.length; i++) {
 					fadeValue = circleGroup.children[i].fillColor.lightness;
-					if ((circleGroup.children[i].fadeToggle === 1) && (fadeValue >= 0)) {
+					if ((circleGroup.children[i].fadeToggle === 1) && (fadeValue > lightnessLimit + 0)) {
 						circleGroup.children[i].fillColor.lightness -= stepSize;
-					} else if ((circleGroup.children[i].fadeToggle === 2) && (fadeValue <= 1)) {
+					} else if ((circleGroup.children[i].fadeToggle === 2) && (fadeValue < 1)) {
 						circleGroup.children[i].fillColor.lightness += stepSize;
 					} else {
 						circleGroup.children[i].fadeToggle = 0;
@@ -521,7 +512,7 @@ function circles() {
 	} );
     
     $( "#slider_hue" ).on( "slide", function( event, ui ) {
-        colorHue(circleGroup);
+        changeHue(circleGroup);
        // console.log(circleGroup.fillColor.hue);
     } );
 
@@ -551,7 +542,3 @@ $(document).ready(function() {
 $(window).resize(function() {
 	//circles();
 });
-
-$( "#slider_count" ).on( "slidechange", function( event, ui ) {
-    circles();
-} );
