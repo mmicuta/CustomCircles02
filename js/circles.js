@@ -1,7 +1,19 @@
+// Install paper.js event handlers
+paper.install(window);
+
+// Variable Declarations
+var n = 10;
+var fadeIncrement = 0.1;
+var lightnessLimit = 0.5;
+
+var paperHue = Math.floor(Math.random() * 360);
+console.log(paperHue);
+
 // UI Controls
+// Slider to control grid density
 $(function() {
 	$( "#slider_count" ).slider({
-		value: 10,
+		value: paperHue,
 		min: 5,
 		max: 20,
 		step: 1,
@@ -17,21 +29,114 @@ $(function() {
 	});
 });
 
+// Slider to control Hue
+$(function() {
+	$( "#slider_hue" ).slider({
+		value: 0,
+		min: 0,
+		max: 360,
+		step: 1,
+		slide: function(){
+			//document.getElementById("test").innerText=$("#slider").slider("value");
+			paperHue = $("#slider_hue").slider("value");
+            //console.log(paperHue);   
+		},
+		change: function(event, ui){
+			//var n = $("#slider").slider("value");
+			//circles();
+		}
+	});
+});
+
+// Switch state and fill of object
+function switchState(input, delay) {
+    stepCount = 1/fadeIncrement;
+    fadeDelay = Math.floor(delay * (stepCount*(1 / 60)) * 1000) / 2;
+    //fadeDelay = delay * (stepCount*(1 / 60)) * 1000;
+    setTimeout(function(){
+        if (input.state === 0) {
+            input.fadeToggle = 2;
+            input.state = 1;
+            input.strokeWidth = 0.5;
+        } else {
+            input.fadeToggle = 1;
+            input.state = 0;
+            input.strokeWidth = 0.5;
+        }
+    }, fadeDelay);
+}
+
+// Switch border style
+function switchStroke(input) {
+    if (input.borderState === 1) {
+        input.strokeColor = 0;
+        input.borderState = 0;
+    } else if (input.borderState === 0) {
+        input.strokeColor = 1;
+        input.borderState = 1;
+    }
+}
+
+// Change opacity of object based on its colour
+function fadeFill(input) {
+    if (input.state === 0) {
+        input.fillColor.lightness = 0.2;
+    } else {
+        input.fillColor.lightness = 0.8;
+    }
+}
+
+// Change opacity of object based on its colour
+function scaleStroke(input) {
+    if (input.state === 0) {
+        input.strokeWidth = 2;
+    } else {
+        input.strokeWidth = 0.1;
+    }
+}
+
+// Invert fill of all circles
+function invertFill(input) {
+    for (var i = 0; i < input.children.length; i++) {
+        switchState(input.children[i],0);
+    }
+}
+
+// Clear fill to all white
+function clearFill(input) {
+    for (var i = 0; i < input.children.length; i++) {
+        if (input.children[i].state != 1) {
+            switchState(input.children[i]);
+        }
+    }
+}
+
+// Random fill x% of cells
+function randomFill(input) {
+    for (var i = 0; i < input.children.length; i++) {
+        if (input.children[i].state === 0) {
+            if (Math.random()<0.05) {
+                switchState(input.children[i]);
+            }
+        } else {
+            if (Math.random()>0.05) {
+                switchState(input.children[i]);
+            }
+        }
+
+    }
+}
+
+// Clear fill to all white
+function changeHue(input) {
+    for (var i = 0; i < input.children.length; i++) {
+        input.children[i].fillColor.hue = paperHue;
+        //input.children[i].fillColor.hue = $("#slider_hue").slider("value");;
+    }
+    //input.fillColor.hue = paperHue;
+}
 
 
-n = 10;
-//n = $( '#slider_count' ).slider( "option", "value" );
-//n = $( "#slider_count" ).on( "slidestop", function( event, ui ) {} );
-//console.log(typeof "test");
-//console.log(typeof n);
-//console.log(typeof $( "#slider_count" ).on( "slidestop", function( event, ui ) {} ));
-//fadeIncrement = 0.08;
-var fadeIncrement = 0.08;
-
-// Install paper.js event handlers
-paper.install(window);
-
-//Functions
 function circles() {
 	// Reference canvas element
 	var canvas = document.getElementById("canvas01"); 
@@ -76,88 +181,6 @@ function circles() {
 
 	// Setup Paper.js project
 	paper.setup(canvas);
-
-	// Canvas specific functions
-	// Switch state and fill of object
-	function switchState(input, delay) {
-		stepCount = 1/fadeIncrement;
-		fadeDelay = Math.floor(delay * (stepCount*(1 / 60)) * 1000) / 2;
-		//fadeDelay = delay * (stepCount*(1 / 60)) * 1000;
-		setTimeout(function(){
-			if (input.state === 0) {
-				input.fadeToggle = 2;
-				input.state = 1;
-				input.strokeWidth = 0.5;
-			} else {
-				input.fadeToggle = 1;
-				input.state = 0;
-				input.strokeWidth = 0.5;
-			}
-		}, fadeDelay);
-	}
-
-	// Switch border style
-	function switchStroke(input) {
-		if (input.borderState === 1) {
-			input.strokeColor = 0;
-			input.borderState = 0;
-		} else if (input.borderState === 0) {
-			input.strokeColor = 1;
-			input.borderState = 1;
-		}
-	}
-
-	// Change opacity of object based on its colour
-	function fadeFill(input) {
-		if (input.state === 0) {
-			input.fillColor.lightness = 0.2;
-		} else {
-			input.fillColor.lightness = 0.8;
-		}
-	}
-
-	// Change opacity of object based on its colour
-	function scaleStroke(input) {
-		if (input.state === 0) {
-			input.strokeWidth = 2;
-		} else {
-			input.strokeWidth = 0.1;
-		}
-	}
-
-	// Invert fill of all circles
-	function invertFill(input) {
-		for (var i = 0; i < input.children.length; i++) {
-			switchState(input.children[i],0);
-		}
-	}
-
-	// Clear fill to all white
-	function clearFill(input) {
-		for (var i = 0; i < input.children.length; i++) {
-			if (input.children[i].state != 1) {
-				switchState(input.children[i]);
-			}
-		}
-	}
-
-	// Random fill x% of cells
-	function randomFill(input) {
-		for (var i = 0; i < input.children.length; i++) {
-			if (input.children[i].state === 0) {
-				if (Math.random()<0.05) {
-					switchState(input.children[i]);
-				}
-			} else {
-				if (Math.random()>0.05) {
-					switchState(input.children[i]);
-				}
-			}
-			
-		}
-	}
-
-
 
 
 	// Choose a random next direction for the switchState pathway to move to
@@ -204,8 +227,6 @@ function circles() {
 
 			testVal2.push([newX,newY] + " ")
 
-			//checkIndex = oldAdds.indexOf(newCoords);
-
 			if (checkIndex === -1) {
 				newXAdd = newX;
 				newYAdd = newY;
@@ -215,11 +236,6 @@ function circles() {
 				invalidCircle = 1;
 			}
 		}
-
-	//	document.getElementById("test").innerText=testVal;
-	//	document.getElementById("test2").innerText=testVal2;
-	//	document.getElementById("test3").innerText=checkAdd;
-
 	}
 
 
@@ -343,12 +359,7 @@ function circles() {
 					oldAddresses.push(newCoords);
 					automata(posY, k/2);
 				}
-
 			}
-
-		//	document.getElementById("test").innerText=oldAddresses[0].address_x;
-		//	document.getElementById("test2").innerText=oldAddresses[0].address_y;
-
 		}	
 	};
 
@@ -419,12 +430,13 @@ function circles() {
 		circle.address_x = centroidsArray[i].address_x;
 		circle.address_y = centroidsArray[i].address_y;
 		circle.fadeToggle = 0;
-		circle.fillColor = {hue: 0, saturation: 0, lightness: 1};
+		circle.fillColor = {hue: paperHue, saturation: 1, lightness: lightnessLimit};
 		circle.strokeColor = {hue: 0, saturation: 0, lightness: 0};
 		circle.strokeWidth = 0.5;
 		if (circle.state === 1) {
+            
 		} else {
-			circle.fillColor.lightness = 0;
+			circle.fillColor.lightness = lightnessLimit;
 			circle.state = 0;
 		}
 		circleGroup.addChild(circle);
@@ -433,7 +445,6 @@ function circles() {
 		// Mouse event based behaviour
 		circle.onMouseEnter = function(){		
 			scaleStroke(this);
-		//	document.getElementById("test").innerText=[this.address_x,this.address_y];
 		}
 
 		circle.onMouseLeave = function(){		
@@ -462,23 +473,17 @@ function circles() {
 				fadeStart = (delay * stepCount) + eventStart;
 				stepSize = [];
 
-				//document.getElementById("test").innerText=delay;
-				
-				//document.getElementById("test").innerText=fadeStart;
-
 				if (event.count >= fadeStart) {
 					stepSize = 0;
 				} else {
 					stepSize = increment;
 				}
 
-				//timeInterval = delay * ((1/fadeIncrement) * (1/60)) * 1000;
-				//document.getElementById("test").innerText=timeInterval;
 				for (var i = 0; i < circleGroup.children.length; i++) {
 					fadeValue = circleGroup.children[i].fillColor.lightness;
-					if ((circleGroup.children[i].fadeToggle === 1) && (fadeValue >= 0)) {
+					if ((circleGroup.children[i].fadeToggle === 1) && (fadeValue > lightnessLimit + 0)) {
 						circleGroup.children[i].fillColor.lightness -= stepSize;
-					} else if ((circleGroup.children[i].fadeToggle === 2) && (fadeValue <= 1)) {
+					} else if ((circleGroup.children[i].fadeToggle === 2) && (fadeValue < 1)) {
 						circleGroup.children[i].fillColor.lightness += stepSize;
 					} else {
 						circleGroup.children[i].fadeToggle = 0;
@@ -490,45 +495,32 @@ function circles() {
 
 	};
 
-	$("#bdr").click(function() {
+	$( "#bdr" ).click(function() {
 		switchStroke(circleGroup);
-	});
+	} );
 
-	$("#inv").click(function() {
+	$( "#inv" ).click(function() {
 		invertFill(circleGroup);
-	});
+	} );
 
-	$("#clr").click(function() {
+	$( "#clr" ).click(function() {
 		clearFill(circleGroup);
-	});
+	} );
 
-	$("#rnd").click(function() {
+	$( "#rnd" ).click(function() {
 		randomFill(circleGroup);
-	});
+	} );
+    
+    $( "#slider_hue" ).on( "slide", function( event, ui ) {
+        changeHue(circleGroup);
+       // console.log(circleGroup.fillColor.hue);
+    } );
 
 	paper.view.draw();
 
 
 
 };
-
-$(function () {
-	$("#slider").slider({
-		value: 10,
-		min: 5,
-		max: 20,
-		step: 1,
-		slide: function () {
-			//document.getElementById("test").innerText=$("#slider").slider("value");
-			var n = $("#slider").slider("value");
-			circles();
-		},
-		change: function(event, ui){
-			//var n = $("#slider").slider("value");
-			//circles();
-		}
-	});
-});
 
 function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
@@ -550,7 +542,3 @@ $(document).ready(function() {
 $(window).resize(function() {
 	//circles();
 });
-
-$( "#slider_count" ).on( "slidechange", function( event, ui ) {
-    circles();
-} );
