@@ -6,25 +6,27 @@ var n = 10;
 var fadeIncrement = 0.1;
 var lightnessLimit = 0.5;
 
-var paperHue = Math.floor(Math.random() * 360);
+var hueInit = Math.floor(Math.random() * 360);
+var paperHue = hueInit;
+var paperSaturation = 0.8;
 console.log(paperHue);
 
 // UI Controls
 // Slider to control grid density
 $(function() {
 	$( "#slider_count" ).slider({
-		value: paperHue,
+		value: n,
 		min: 5,
 		max: 20,
 		step: 1,
-		slide: function(){
+		slide: function( event, ui ){
 			//document.getElementById("test").innerText=$("#slider").slider("value");
-			n = $("#slider_count").slider("value");
+			n = $("#slider_count").slider("value", ui.value);
 			circles();
 		},
-		change: function(event, ui){
-			//var n = $("#slider").slider("value");
-			//circles();
+		change: function( event, ui ){
+			n = $("#slider_count").slider("value", ui.value);
+			circles();
 		}
 	});
 });
@@ -32,18 +34,33 @@ $(function() {
 // Slider to control Hue
 $(function() {
 	$( "#slider_hue" ).slider({
-		value: 0,
+		value: hueInit,
 		min: 0,
 		max: 360,
-		step: 1,
-		slide: function(){
+		step: 20,
+		slide: function( event, ui ){
 			//document.getElementById("test").innerText=$("#slider").slider("value");
-			paperHue = $("#slider_hue").slider("value");
-            //console.log(paperHue);   
+			paperHue = $("#slider_hue").Number(ui.value);
 		},
-		change: function(event, ui){
+		change: function( event, ui ){
 			//var n = $("#slider").slider("value");
 			//circles();
+            paperHue = $("#slider_hue").Number(ui.value);
+		}
+	});
+});
+
+$(function() {
+	$( "#slider_sat" ).slider({
+		value: 0.8,
+		min: 0.2,
+		max: 0.8,
+		step: .1,
+		change: function(){
+			paperSaturation = $("#slider_sat").slider("value");
+		},
+        slide: function(){
+			paperSaturation = $("#slider_sat").slider("value");
 		}
 	});
 });
@@ -127,13 +144,18 @@ function randomFill(input) {
     }
 }
 
-// Clear fill to all white
+// Use slider to change hue
 function changeHue(input) {
     for (var i = 0; i < input.children.length; i++) {
         input.children[i].fillColor.hue = paperHue;
-        //input.children[i].fillColor.hue = $("#slider_hue").slider("value");;
     }
-    //input.fillColor.hue = paperHue;
+}
+
+// Use slider to change saturation
+function changeSat(input) {
+    for (var i = 0; i < input.children.length; i++) {
+        input.children[i].fillColor.lightness = paperSaturation;
+    }
 }
 
 
@@ -430,13 +452,13 @@ function circles() {
 		circle.address_x = centroidsArray[i].address_x;
 		circle.address_y = centroidsArray[i].address_y;
 		circle.fadeToggle = 0;
-		circle.fillColor = {hue: paperHue, saturation: 1, lightness: lightnessLimit};
+		circle.fillColor = {hue: paperHue, saturation: 0.5, lightness: paperSaturation};
 		circle.strokeColor = {hue: 0, saturation: 0, lightness: 0};
 		circle.strokeWidth = 0.5;
 		if (circle.state === 1) {
             
 		} else {
-			circle.fillColor.lightness = lightnessLimit;
+			circle.fillColor.lightness = paperSaturation;
 			circle.state = 0;
 		}
 		circleGroup.addChild(circle);
@@ -511,10 +533,25 @@ function circles() {
 		randomFill(circleGroup);
 	} );
     
+    $( "#slider_hue" ).on( "slidechange", function( event, ui ) {
+        changeHue(circleGroup);
+        console.log(paperHue);
+    } );
+    
     $( "#slider_hue" ).on( "slide", function( event, ui ) {
         changeHue(circleGroup);
-       // console.log(circleGroup.fillColor.hue);
+        console.log(paperHue);
     } );
+    
+    $( "#slider_sat" ).on( "slidechange", function() {
+        changeSat(circleGroup);
+        console.log(paperSaturation);
+    } );
+    
+//    $( "#slider_sat" ).on( "slide", function( event, ui ) {
+//        changeSat(circleGroup);
+//        console.log(paperSaturation);
+//    } );
 
 	paper.view.draw();
 
