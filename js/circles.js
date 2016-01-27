@@ -26,25 +26,26 @@ $(function() {
 	});
 });
 
-// Slider to control Hue
+// Slider to control hue
 $(function() {
 	$( "#slider_hue" ).slider({
 		value: hueInit,
 		min: 0,
 		max: 360,
-		step: 20,
+		step: 10,
 		slide: function( event, ui ){
             paperHue = ui.value;
 		}
 	});
 });
 
+// Slider to control saturation
 $(function() {
 	$( "#slider_sat" ).slider({
 		value: 0.8,
-		min: 0.2,
+		min: 0.5,
 		max: 0.8,
-		step: .1,
+		step: .02,
         slide: function( event, ui ){
 			paperSaturation = ui.value;
 		}
@@ -83,7 +84,7 @@ function switchStroke(input) {
 // Change opacity of object based on its colour
 function fadeFill(input) {
     if (input.state === 0) {
-        input.fillColor.lightness = 0.2;
+        input.fillColor.lightness = 0.5;
     } else {
         input.fillColor.lightness = 0.8;
     }
@@ -140,7 +141,9 @@ function changeHue(input) {
 // Use slider to change saturation
 function changeSat(input) {
     for (var i = 0; i < input.children.length; i++) {
-        input.children[i].fillColor.lightness = paperSaturation;
+        if (input.children[i].state != 1) {
+            input.children[i].fillColor.lightness = paperSaturation;
+        }
     }
 }
 
@@ -489,7 +492,7 @@ function circles() {
 
 				for (var i = 0; i < circleGroup.children.length; i++) {
 					fadeValue = circleGroup.children[i].fillColor.lightness;
-					if ((circleGroup.children[i].fadeToggle === 1) && (fadeValue > lightnessLimit + 0)) {
+					if ((circleGroup.children[i].fadeToggle === 1) && (fadeValue > lightnessLimit)) {
 						circleGroup.children[i].fillColor.lightness -= stepSize;
 					} else if ((circleGroup.children[i].fadeToggle === 2) && (fadeValue < 1)) {
 						circleGroup.children[i].fillColor.lightness += stepSize;
