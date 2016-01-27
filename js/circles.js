@@ -20,12 +20,7 @@ $(function() {
 		max: 20,
 		step: 1,
 		slide: function( event, ui ){
-			//document.getElementById("test").innerText=$("#slider").slider("value");
-			n = $("#slider_count").slider("value", ui.value);
-			circles();
-		},
-		change: function( event, ui ){
-			n = $("#slider_count").slider("value", ui.value);
+			n = ui.value;
 			circles();
 		}
 	});
@@ -39,13 +34,7 @@ $(function() {
 		max: 360,
 		step: 20,
 		slide: function( event, ui ){
-			//document.getElementById("test").innerText=$("#slider").slider("value");
-			paperHue = $("#slider_hue").Number(ui.value);
-		},
-		change: function( event, ui ){
-			//var n = $("#slider").slider("value");
-			//circles();
-            paperHue = $("#slider_hue").Number(ui.value);
+            paperHue = ui.value;
 		}
 	});
 });
@@ -56,11 +45,8 @@ $(function() {
 		min: 0.2,
 		max: 0.8,
 		step: .1,
-		change: function(){
-			paperSaturation = $("#slider_sat").slider("value");
-		},
-        slide: function(){
-			paperSaturation = $("#slider_sat").slider("value");
+        slide: function( event, ui ){
+			paperSaturation = ui.value;
 		}
 	});
 });
@@ -548,10 +534,10 @@ function circles() {
         console.log(paperSaturation);
     } );
     
-//    $( "#slider_sat" ).on( "slide", function( event, ui ) {
-//        changeSat(circleGroup);
-//        console.log(paperSaturation);
-//    } );
+    $( "#slider_sat" ).on( "slide", function( event, ui ) {
+        changeSat(circleGroup);
+        console.log(paperSaturation);
+    } );
 
 	paper.view.draw();
 
