@@ -16,13 +16,13 @@ console.log(paperHue);
 
 // UI Controls
 // Slider to control grid density
-$(function() {
+$(function () {
 	$( "#slider_count" ).slider({
 		value: n,
 		min: 5,
 		max: 20,
 		step: 1,
-		slide: function( event, ui ){
+		slide: function (event, ui) {
 			n = ui.value;
 			circles();
 		}
@@ -30,39 +30,39 @@ $(function() {
 });
 
 // Slider to control hue
-$(function() {
+$(function () {
 	$( "#slider_hue" ).slider({
 		value: hueInit,
 		min: 0,
 		max: 360,
 		step: 10,
-		slide: function( event, ui ){
+		slide: function (event, ui) {
             paperHue = ui.value;
 		}
 	});
 });
 
 // Slider to control saturation
-$(function() {
+$(function () {
 	$( "#slider_sat" ).slider({
 		value: 0.8,
 		min: 0.5,
 		max: 0.8,
-		step: .02,
-        slide: function( event, ui ){
+		step: 0.02,
+        slide: function (event, ui) {
 			paperSaturation = ui.value;
 		}
 	});
 });
 
 // Slider to control circle radius
-$(function() {
+$(function () {
 	$( "#slider_rad" ).slider({
 		value: 0.5,
 		min: 0.2,
 		max: 0.86,
 		step: 0.02,
-        slide: function( event, ui ){
+        slide: function (event, ui) {
 			radiusFactor = ui.value;
 		}
 	});
@@ -72,7 +72,6 @@ $(function() {
 function switchState(input, delay) {
     stepCount = 1/fadeIncrement;
     fadeDelay = Math.floor(delay * (stepCount*(1 / 60)) * 1000) / 2;
-    //fadeDelay = delay * (stepCount*(1 / 60)) * 1000;
     setTimeout(function(){
         if (input.state === 0) {
             input.fadeToggle = 2;
@@ -503,7 +502,7 @@ function circles() {
 				eventStart = event.count;
 				eventDelta = eventStart
 
-				stepCount = 1/increment;
+				stepCount = paperSaturation/increment;
 				fadeStart = (delay * stepCount) + eventStart;
 				stepSize = [];
 
@@ -515,7 +514,7 @@ function circles() {
 
 				for (var i = 0; i < circleGroup.children.length; i++) {
 					fadeValue = circleGroup.children[i].fillColor.lightness;
-					if ((circleGroup.children[i].fadeToggle === 1) && (fadeValue > lightnessLimit)) {
+					if ((circleGroup.children[i].fadeToggle === 1) && (fadeValue >= (paperSaturation + increment))) {
 						circleGroup.children[i].fillColor.lightness -= stepSize;
 					} else if ((circleGroup.children[i].fadeToggle === 2) && (fadeValue < 1)) {
 						circleGroup.children[i].fillColor.lightness += stepSize;
