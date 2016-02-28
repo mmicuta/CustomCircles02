@@ -2,6 +2,7 @@
 paper.install(window);
 
 // Variable Declarations
+
 var n = 10;
 var fadeIncrement = 0.1;
 var lightnessLimit = 0.5;
@@ -9,6 +10,8 @@ var lightnessLimit = 0.5;
 var hueInit = Math.floor(Math.random() * 360);
 var paperHue = hueInit;
 var paperSaturation = 0.8;
+var radiusFactor = 0.86;
+var gw = 0;
 console.log(paperHue);
 
 // UI Controls
@@ -48,6 +51,19 @@ $(function() {
 		step: .02,
         slide: function( event, ui ){
 			paperSaturation = ui.value;
+		}
+	});
+});
+
+// Slider to control circle radius
+$(function() {
+	$( "#slider_rad" ).slider({
+		value: 0.5,
+		min: 0.2,
+		max: 0.86,
+		step: 0.02,
+        slide: function( event, ui ){
+			radiusFactor = ui.value;
 		}
 	});
 });
@@ -147,6 +163,13 @@ function changeSat(input) {
     }
 }
 
+// Use slider to change radius
+function changeRadius(input) {
+    for (var i = 0; i < input.children.length; i++) {
+        input.children[i].radius = (radiusFactor*gw) / 2;
+    }
+}
+
 
 function circles() {
 	// Reference canvas element
@@ -155,34 +178,32 @@ function circles() {
 	// Clear previous canvas
 	paper.clear(canvas);
 
-	// Define canvas dimensions based on view window width and height
-	//var canvasHeight = $(window).innerHeight()-150;
-	//var canvasWidth = $(window).innerWidth();
-	//var canvasWidth = canvasHeight * (3/5);
-	var canvasWidth = $(".canvascontainer").innerWidth();
-	var canvasHeight = canvasWidth * 1.618;
-	//var canvasWidth = canvasHeight * (1/1.618);
+    var canvasWidth = $(".canvascontainer").innerWidth();
+    var canvasHeight = canvasWidth * 1.618;
 
-	// Define height and width divisions by screen proportions
-	if (canvasHeight >= canvasWidth) {
-		var nw = n;
-		var gw = canvasWidth/n;
-		var nh = Math.floor(canvasHeight/gw);
-		var h3 = canvasHeight-(nh*gw);
-		var w3 = 0;
-	} else {
-		var nh = n;
-		var gw = canvasHeight/n;
-		var nw = Math.floor(canvasWidth/gw);
-		var w3 = canvasWidth-(nw*gw);
-		var h3 = 0;
-	}
+
+    // Define height and width divisions by screen proportions
+    if (canvasHeight >= canvasWidth) {
+        var nw = n;
+        var gw = canvasWidth/n;
+        var nh = Math.floor(canvasHeight/gw);
+        var h3 = canvasHeight-(nh*gw);
+        var w3 = 0;
+    } else {
+        var nh = n;
+        var gw = canvasHeight/n;
+        var nw = Math.floor(canvasWidth/gw);
+        var w3 = canvasWidth-(nw*gw);
+        var h3 = 0;
+    }
+
 
 	var h1 = canvasHeight;
 	var w1 = canvasWidth;
 	var h2 = canvasHeight - gw;
 	var w2 = canvasWidth - gw;
-	var radius = (0.85*gw) / 2;
+	var radius = (radiusFactor*gw) / 2;
+
 
 	// Adjust canvas size to window size and centre it
 	canvas.height = h1;
@@ -190,6 +211,8 @@ function circles() {
 	canvas.style.margin = "0 auto";
 
 
+
+    
 	// Setup Paper.js project
 	paper.setup(canvas);
 
@@ -541,6 +564,11 @@ function circles() {
         changeSat(circleGroup);
         console.log(paperSaturation);
     } );
+    
+    $( "#slider_rad" ).on( "slide", function( event, ui ) {
+        changeRadius(circleGroup);
+        console.log(radius);
+    } );
 
 	paper.view.draw();
 
@@ -557,6 +585,7 @@ function shuffleArray(array) {
     }
     return array;
 }
+
 
 
 //Setup SVG Canvas
