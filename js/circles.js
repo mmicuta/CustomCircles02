@@ -87,12 +87,22 @@ function switchState(input, delay) {
 
 // Switch border style
 function switchStroke(input) {
-    if (input.borderState === 1) {
-        input.strokeColor = 0;
-        input.borderState = 0;
-    } else if (input.borderState === 0) {
-        input.strokeColor = 1;
-        input.borderState = 1;
+//    if (input.borderState === 1) {
+//        input.strokeColor = "black";
+//        input.borderState = 0;
+//    } else if (input.borderState === 0) {
+//        input.strokeColor = "white";
+//        input.borderState = 1;
+//    }
+    for (var i = 0; i < input.children.length; i++) {
+        if (input.children[i].borderState === 1) {
+            input.children[i].strokeColor = 0;
+            input.children[i].borderState = 0;
+        } else if (input.children[i].borderState === 0) {
+            input.children[i].strokeColor = 1;
+            input.children[i].borderState = 1;
+        }
+        console.log(input.children[i].borderState);
     }
 }
 
@@ -107,10 +117,17 @@ function fadeFill(input) {
 
 // Change opacity of object based on its colour
 function scaleStroke(input) {
-    if (input.state === 0) {
-        input.strokeWidth = 2;
-    } else {
-        input.strokeWidth = 0.1;
+    input.strokeWidth = 1.5;
+    if (input.borderState === 1) {
+        input.strokeColor = 0;
+    }
+}
+
+// Change opacity of object based on its colour
+function unScaleStroke(input) {
+    input.strokeWidth = 0.5;
+    if (input.borderState === 1) {
+        input.strokeColor = 1;
     }
 }
 
@@ -452,7 +469,7 @@ function circles() {
 
 	// Draw circles from point coordinates and radius
 	circleGroup = new Group();
-	circleGroup.borderState = 0;
+	//circleGroup.borderState = 0;
 
 	for (var i = 0; i < centroidsArray.length; i++) {
 		var centroid = centroidsArray[i]
@@ -466,6 +483,7 @@ function circles() {
 		circle.fillColor = {hue: paperHue, saturation: 0.5, lightness: paperSaturation};
 		circle.strokeColor = {hue: 0, saturation: 0, lightness: 0};
 		circle.strokeWidth = 0.5;
+        circle.borderState = 0;
 		if (circle.state === 1) {
             
 		} else {
@@ -483,12 +501,9 @@ function circles() {
 		circle.onMouseLeave = function(){		
 			if (mouse === 0) {
 				switchState(this,0);
-				this.strokeWidth = 0.5;
-			} else if (this.state === 0) {
-				this.strokeWidth = 0.5;
-			} else {
-				this.strokeWidth = 0.5;
-			}
+            }
+            unScaleStroke(this);
+            
 		}		
 
 		circle.onClick = function(){
