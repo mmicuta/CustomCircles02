@@ -12,7 +12,7 @@ var paperHue = hueInit;
 var paperSaturation = 0.8;
 var radiusFactor = 0.86;
 var gw = 0;
-console.log(paperHue);
+//console.log(paperHue);
 
 // UI Controls
 // Slider to control grid density
@@ -20,9 +20,13 @@ $(function () {
 	$( "#slider_count" ).slider({
 		value: n,
 		min: 5,
-		max: 20,
+		max: 15,
 		step: 1,
 		slide: function (event, ui) {
+			n = ui.value;
+			circles();
+        },
+        change: function (event, ui) {
 			n = ui.value;
 			circles();
 		}
@@ -77,33 +81,12 @@ function switchState(input, delay) {
             input.fadeToggle = 2;
             input.state = 1;
             input.strokeWidth = 0.5;
-        } else {
+        } else if (input.state === 1) {
             input.fadeToggle = 1;
             input.state = 0;
             input.strokeWidth = 0.5;
         }
     }, fadeDelay);
-}
-
-// Switch border style
-function switchStroke(input) {
-//    if (input.borderState === 1) {
-//        input.strokeColor = "black";
-//        input.borderState = 0;
-//    } else if (input.borderState === 0) {
-//        input.strokeColor = "white";
-//        input.borderState = 1;
-//    }
-    for (var i = 0; i < input.children.length; i++) {
-        if (input.children[i].borderState === 1) {
-            input.children[i].strokeColor = 0;
-            input.children[i].borderState = 0;
-        } else if (input.children[i].borderState === 0) {
-            input.children[i].strokeColor = 1;
-            input.children[i].borderState = 1;
-        }
-        console.log(input.children[i].borderState);
-    }
 }
 
 // Change opacity of object based on its colour
@@ -141,9 +124,23 @@ function invertFill(input) {
 // Clear fill to all white
 function clearFill(input) {
     for (var i = 0; i < input.children.length; i++) {
-        if (input.children[i].state != 1) {
+        if (input.children[i].state === 0) {
             switchState(input.children[i]);
         }
+    }
+}
+
+// Switch border style
+function switchStroke(input) {
+    for (var i = 0; i < input.children.length; i++) {
+        if (input.children[i].borderState === 1) {
+            input.children[i].strokeColor = 0;
+            input.children[i].borderState = 0;
+        } else if (input.children[i].borderState === 0) {
+            input.children[i].strokeColor = 1;
+            input.children[i].borderState = 1;
+        }
+        //console.log(input.children[i].borderState);
     }
 }
 
@@ -159,7 +156,6 @@ function randomFill(input) {
                 switchState(input.children[i]);
             }
         }
-
     }
 }
 
@@ -186,6 +182,14 @@ function changeRadius(input) {
     }
 }
 
+// Clear data for circle group and children
+function clearData(input) {
+    for (var i = 0; i < input.children.length; i++) {
+        delete input.children[i];
+    }
+    delete input;
+}
+
 
 function circles() {
 	// Reference canvas element
@@ -193,6 +197,9 @@ function circles() {
 
 	// Clear previous canvas
 	paper.clear(canvas);
+    if (typeof circleGroup !== 'undefined') {
+        clearData(circleGroup);
+    }
 
     var canvasWidth = $(".canvascontainer").innerWidth();
     var canvasHeight = canvasWidth * 1.618;
@@ -469,7 +476,6 @@ function circles() {
 
 	// Draw circles from point coordinates and radius
 	circleGroup = new Group();
-	//circleGroup.borderState = 0;
 
 	for (var i = 0; i < centroidsArray.length; i++) {
 		var centroid = centroidsArray[i]
