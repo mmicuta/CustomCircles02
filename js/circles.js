@@ -12,6 +12,7 @@ var paperHue = hueInit;
 var paperSaturation = 0.8;
 var radiusFactor = 0.86;
 var gw = 0;
+var patternCode;
 //console.log(paperHue);
 
 // UI Controls
@@ -119,6 +120,7 @@ function invertFill(input) {
     for (var i = 0; i < input.children.length; i++) {
         switchState(input.children[i],0);
     }
+    recordPattern(input);
 }
 
 // Clear fill to all white
@@ -128,6 +130,7 @@ function clearFill(input) {
             switchState(input.children[i]);
         }
     }
+    recordPattern(input);
 }
 
 // Switch border style
@@ -157,6 +160,7 @@ function randomFill(input) {
             }
         }
     }
+    recordPattern(input);
 }
 
 // Use slider to change hue
@@ -188,6 +192,19 @@ function clearData(input) {
         delete input.children[i];
     }
     delete input;
+}
+
+// Record Pattern
+function recordPattern(input) {
+    patternCode = "//";
+    for (var i = 0; i < input.children.length; i++) {
+        codeItem = input.children[i].state;
+        patternCode.concat(codeItem.toString());
+        //console.log(patternCode.concat(codeItem.toString()));
+        patternCode = patternCode + codeItem.toString();
+        console.log(patternCode);
+    }
+    $("#patternCode").text(patternCode);
 }
 
 
@@ -514,6 +531,7 @@ function circles() {
 
 		circle.onClick = function(){
 			automataPathway(this);
+            recordPattern(circleGroup);
 		}
 
 		view.onFrame = function(event){
@@ -610,7 +628,8 @@ function shuffleArray(array) {
 
 //Setup SVG Canvas
 $(document).ready(function() {
-    circles();	
+    circles();
+    recordPattern(circleGroup);
 });
 
 //Resize canvas to match window size
