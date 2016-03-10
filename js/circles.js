@@ -1,7 +1,8 @@
-// Install paper.js event handlers
+// 1.0 Install paper.js event handlers
 paper.install(window);
 
-// Variable Declarations
+
+// 1.1 Variable Declarations
 
 var n = 10;
 var fadeIncrement = 0.1;
@@ -13,9 +14,62 @@ var paperSaturation = 0.8;
 var radiusFactor = 0.86;
 var gw = 0;
 var patternCode;
-//console.log(paperHue);
 
-// UI Controls
+
+// 1.2 USEFUL FUNCTIONS
+
+// Change Base (i.e. binary to hex)
+(function(){
+
+    var ConvertBase = function (num) {
+        return {
+            from : function (baseFrom) {
+                return {
+                    to : function (baseTo) {
+                        return parseInt(num, baseFrom).toString(baseTo);
+                    }
+                };
+            }
+        };
+    };
+        
+    // binary to decimal
+    ConvertBase.bin2dec = function (num) {
+        return ConvertBase(num).from(2).to(10);
+    };
+    
+    // binary to hexadecimal
+    ConvertBase.bin2hex = function (num) {
+        return ConvertBase(num).from(2).to(16);
+    };
+    
+    // decimal to binary
+    ConvertBase.dec2bin = function (num) {
+        return ConvertBase(num).from(10).to(2);
+    };
+    
+    // decimal to hexadecimal
+    ConvertBase.dec2hex = function (num) {
+        return ConvertBase(num).from(10).to(16);
+    };
+    
+    // hexadecimal to binary
+    ConvertBase.hex2bin = function (num) {
+        return ConvertBase(num).from(16).to(2);
+    };
+    
+    // hexadecimal to decimal
+    ConvertBase.hex2dec = function (num) {
+        return ConvertBase(num).from(16).to(10);
+    };
+    
+    this.ConvertBase = ConvertBase;
+    
+})(this);
+
+
+// 1.3 UI CONTROLS
+
 // Slider to control grid density
 $(function () {
 	$( "#slider_count" ).slider({
@@ -196,17 +250,20 @@ function clearData(input) {
 
 // Record Pattern
 function recordPattern(input) {
-    patternCode = "//";
+    patternCode = "";
     for (var i = 0; i < input.children.length; i++) {
         codeItem = input.children[i].state;
         patternCode.concat(codeItem.toString());
-        //console.log(patternCode.concat(codeItem.toString()));
         patternCode = patternCode + codeItem.toString();
-        console.log(patternCode);
+        //console.log(patternCode);
     }
-    $("#patternCode").text(patternCode);
+    patternHex = ConvertBase.bin2hex(patternCode);
+    $("#patternCode").text(patternHex);
+    console.log(patternHex);
 }
 
+
+// 2.0 MAIN PAPER.JS SECTION
 
 function circles() {
 	// Reference canvas element
