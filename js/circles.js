@@ -43,6 +43,11 @@ var patternCode;
         return ConvertBase(num).from(2).to(16);
     };
     
+    // binary to radix-36
+    ConvertBase.bin2rad = function (num) {
+        return ConvertBase(num).from(2).to(36);
+    };
+    
     // decimal to binary
     ConvertBase.dec2bin = function (num) {
         return ConvertBase(num).from(10).to(2);
@@ -56,6 +61,11 @@ var patternCode;
     // hexadecimal to binary
     ConvertBase.hex2bin = function (num) {
         return ConvertBase(num).from(16).to(2);
+    };
+    
+    // radix-64 to binary
+    ConvertBase.rad2bin = function (num) {
+        return ConvertBase(num).from(36).to(2);
     };
     
     // hexadecimal to decimal
@@ -174,7 +184,7 @@ function invertFill(input) {
     for (var i = 0; i < input.children.length; i++) {
         switchState(input.children[i],0);
     }
-    recordPattern(input);
+    //recordPattern(input);
 }
 
 // Clear fill to all white
@@ -184,7 +194,7 @@ function clearFill(input) {
             switchState(input.children[i]);
         }
     }
-    recordPattern(input);
+    //recordPattern(input);
 }
 
 // Switch border style
@@ -214,7 +224,7 @@ function randomFill(input) {
             }
         }
     }
-    recordPattern(input);
+    //recordPattern(input);
 }
 
 // Use slider to change hue
@@ -257,7 +267,7 @@ function recordPattern(input) {
         patternCode = patternCode + codeItem.toString();
         //console.log(patternCode);
     }
-    patternHex = ConvertBase.bin2hex(patternCode);
+    patternHex = ConvertBase.bin2rad(patternCode);
     $("#patternCode").text(patternHex);
     console.log(patternHex);
 }
@@ -583,15 +593,19 @@ function circles() {
 				switchState(this,0);
             }
             unScaleStroke(this);
+            //recordPattern(circleGroup);
             
 		}		
 
 		circle.onClick = function(){
 			automataPathway(this);
-            recordPattern(circleGroup);
+            //recordPattern(circleGroup);
 		}
 
 		view.onFrame = function(event){
+            
+            // Record live pattern
+            recordPattern(circleGroup);
 
 			// Gradual fade using onFrame functionality
 			function fadeTo(increment, delay) {
@@ -626,18 +640,22 @@ function circles() {
 
 	$( "#bdr" ).click(function() {
 		switchStroke(circleGroup);
+        //recordPattern(circleGroup);
 	} );
 
 	$( "#inv" ).click(function() {
 		invertFill(circleGroup);
+        //recordPattern(circleGroup);
 	} );
 
 	$( "#clr" ).click(function() {
 		clearFill(circleGroup);
+        //recordPattern(circleGroup);
 	} );
 
 	$( "#rnd" ).click(function() {
 		randomFill(circleGroup);
+        //recordPattern(circleGroup);
 	} );
     
     $( "#slider_hue" ).on( "slidechange", function( event, ui ) {
