@@ -1,49 +1,138 @@
-// Install paper.js event handlers
+// 1.0 Install paper.js event handlers
 paper.install(window);
 
-// Variable Declarations
+
+// 1.1 Variable Declarations
+
 var n = 10;
 var fadeIncrement = 0.1;
 var lightnessLimit = 0.5;
 
-var paperHue = Math.floor(Math.random() * 360);
-console.log(paperHue);
+var hueInit = Math.floor(Math.random() * 360);
+var paperHue = hueInit;
+var paperSaturation = 0.8;
+var radiusFactor = 0.86;
+var gw = 0;
+var patternCode;
 
-// UI Controls
+
+// 1.2 USEFUL FUNCTIONS
+
+// Change Base (i.e. binary to hex)
+(function(){
+
+    var ConvertBase = function (num) {
+        return {
+            from : function (baseFrom) {
+                return {
+                    to : function (baseTo) {
+                        return parseInt(num, baseFrom).toString(baseTo);
+                    }
+                };
+            }
+        };
+    };
+        
+    // binary to decimal
+    ConvertBase.bin2dec = function (num) {
+        return ConvertBase(num).from(2).to(10);
+    };
+    
+    // binary to hexadecimal
+    ConvertBase.bin2hex = function (num) {
+        return ConvertBase(num).from(2).to(16);
+    };
+    
+    // binary to radix-36
+    ConvertBase.bin2rad = function (num) {
+        return ConvertBase(num).from(2).to(36);
+    };
+    
+    // decimal to binary
+    ConvertBase.dec2bin = function (num) {
+        return ConvertBase(num).from(10).to(2);
+    };
+    
+    // decimal to hexadecimal
+    ConvertBase.dec2hex = function (num) {
+        return ConvertBase(num).from(10).to(16);
+    };
+    
+    // hexadecimal to binary
+    ConvertBase.hex2bin = function (num) {
+        return ConvertBase(num).from(16).to(2);
+    };
+    
+    // radix-64 to binary
+    ConvertBase.rad2bin = function (num) {
+        return ConvertBase(num).from(36).to(2);
+    };
+    
+    // hexadecimal to decimal
+    ConvertBase.hex2dec = function (num) {
+        return ConvertBase(num).from(16).to(10);
+    };
+    
+    this.ConvertBase = ConvertBase;
+    
+})(this);
+
+
+// 1.3 UI CONTROLS
+
 // Slider to control grid density
-$(function() {
+$(function () {
 	$( "#slider_count" ).slider({
-		value: paperHue,
+		value: n,
 		min: 5,
-		max: 20,
+		max: 15,
 		step: 1,
-		slide: function(){
-			//document.getElementById("test").innerText=$("#slider").slider("value");
-			n = $("#slider_count").slider("value");
+		slide: function (event, ui) {
+			n = ui.value;
 			circles();
-		},
-		change: function(event, ui){
-			//var n = $("#slider").slider("value");
-			//circles();
+        },
+        change: function (event, ui) {
+			n = ui.value;
+			circles();
 		}
 	});
 });
 
-// Slider to control Hue
-$(function() {
+// Slider to control hue
+$(function () {
 	$( "#slider_hue" ).slider({
-		value: 0,
+		value: hueInit,
 		min: 0,
 		max: 360,
-		step: 1,
-		slide: function(){
-			//document.getElementById("test").innerText=$("#slider").slider("value");
-			paperHue = $("#slider_hue").slider("value");
-            //console.log(paperHue);   
-		},
-		change: function(event, ui){
-			//var n = $("#slider").slider("value");
-			//circles();
+		step: 10,
+		slide: function (event, ui) {
+            paperHue = ui.value;
+		}
+	});
+});
+
+// Slider to control saturation
+$(function () {
+	$( "#slider_sat" ).slider({
+		value: 0.8,
+		min: 0.5,
+		max: 0.8,
+		step: 0.02,
+        slide: function (event, ui) {
+			paperSaturation = ui.value;
+		}
+	});
+});
+
+// Slider to control circle radius
+$(function () {
+	$( "#slider_rad" ).slider({
+		value: 0.5,
+		min: 0.2,
+		max: 0.86,
+		step: 0.02,
+        slide: function (event, ui) {
+			radiusFactor = ui.value;
 		}
 	});
 });
@@ -52,13 +141,12 @@ $(function() {
 function switchState(input, delay) {
     stepCount = 1/fadeIncrement;
     fadeDelay = Math.floor(delay * (stepCount*(1 / 60)) * 1000) / 2;
-    //fadeDelay = delay * (stepCount*(1 / 60)) * 1000;
     setTimeout(function(){
         if (input.state === 0) {
             input.fadeToggle = 2;
             input.state = 1;
             input.strokeWidth = 0.5;
-        } else {
+        } else if (input.state === 1) {
             input.fadeToggle = 1;
             input.state = 0;
             input.strokeWidth = 0.5;
@@ -66,21 +154,10 @@ function switchState(input, delay) {
     }, fadeDelay);
 }
 
-// Switch border style
-function switchStroke(input) {
-    if (input.borderState === 1) {
-        input.strokeColor = 0;
-        input.borderState = 0;
-    } else if (input.borderState === 0) {
-        input.strokeColor = 1;
-        input.borderState = 1;
-    }
-}
-
 // Change opacity of object based on its colour
 function fadeFill(input) {
     if (input.state === 0) {
-        input.fillColor.lightness = 0.2;
+        input.fillColor.lightness = 0.5;
     } else {
         input.fillColor.lightness = 0.8;
     }
@@ -88,10 +165,17 @@ function fadeFill(input) {
 
 // Change opacity of object based on its colour
 function scaleStroke(input) {
-    if (input.state === 0) {
-        input.strokeWidth = 2;
-    } else {
-        input.strokeWidth = 0.1;
+    input.strokeWidth = 1.5;
+    if (input.borderState === 1) {
+        input.strokeColor = 0;
+    }
+}
+
+// Change opacity of object based on its colour
+function unScaleStroke(input) {
+    input.strokeWidth = 0.5;
+    if (input.borderState === 1) {
+        input.strokeColor = 1;
     }
 }
 
@@ -100,14 +184,30 @@ function invertFill(input) {
     for (var i = 0; i < input.children.length; i++) {
         switchState(input.children[i],0);
     }
+    //recordPattern(input);
 }
 
 // Clear fill to all white
 function clearFill(input) {
     for (var i = 0; i < input.children.length; i++) {
-        if (input.children[i].state != 1) {
+        if (input.children[i].state === 0) {
             switchState(input.children[i]);
         }
+    }
+    //recordPattern(input);
+}
+
+// Switch border style
+function switchStroke(input) {
+    for (var i = 0; i < input.children.length; i++) {
+        if (input.children[i].borderState === 1) {
+            input.children[i].strokeColor = 0;
+            input.children[i].borderState = 0;
+        } else if (input.children[i].borderState === 0) {
+            input.children[i].strokeColor = 1;
+            input.children[i].borderState = 1;
+        }
+        //console.log(input.children[i].borderState);
     }
 }
 
@@ -123,19 +223,57 @@ function randomFill(input) {
                 switchState(input.children[i]);
             }
         }
-
     }
+    //recordPattern(input);
 }
 
-// Clear fill to all white
+// Use slider to change hue
 function changeHue(input) {
     for (var i = 0; i < input.children.length; i++) {
         input.children[i].fillColor.hue = paperHue;
-        //input.children[i].fillColor.hue = $("#slider_hue").slider("value");;
     }
-    //input.fillColor.hue = paperHue;
 }
 
+// Use slider to change saturation
+function changeSat(input) {
+    for (var i = 0; i < input.children.length; i++) {
+        if (input.children[i].state != 1) {
+            input.children[i].fillColor.lightness = paperSaturation;
+        }
+    }
+}
+
+// Use slider to change radius
+function changeRadius(input) {
+    for (var i = 0; i < input.children.length; i++) {
+        input.children[i].radius = (radiusFactor*gw) / 2;
+    }
+}
+
+// Clear data for circle group and children
+function clearData(input) {
+    for (var i = 0; i < input.children.length; i++) {
+        delete input.children[i];
+    }
+    delete input;
+}
+
+// Record Pattern
+function recordPattern(input) {
+    patternCode = "";
+    for (var i = 0; i < input.children.length; i++) {
+        codeItem = input.children[i].state;
+        patternCode.concat(codeItem.toString());
+        patternCode = patternCode + codeItem.toString();
+        //console.log(patternCode);
+    }
+    patternHex = ConvertBase.bin2rad(patternCode);
+    $("#patternCode").text(patternHex);
+    console.log(patternHex);
+}
+
+
+// 2.0 MAIN PAPER.JS SECTION
 
 function circles() {
 	// Reference canvas element
@@ -143,35 +281,36 @@ function circles() {
 
 	// Clear previous canvas
 	paper.clear(canvas);
+    if (typeof circleGroup !== 'undefined') {
+        clearData(circleGroup);
+    }
 
-	// Define canvas dimensions based on view window width and height
-	//var canvasHeight = $(window).innerHeight()-150;
-	//var canvasWidth = $(window).innerWidth();
-	//var canvasWidth = canvasHeight * (3/5);
-	var canvasWidth = $(".canvascontainer").innerWidth();
-	var canvasHeight = canvasWidth * 1.618;
-	//var canvasWidth = canvasHeight * (1/1.618);
+    var canvasWidth = $(".canvascontainer").innerWidth();
+    var canvasHeight = canvasWidth * 1.618;
 
-	// Define height and width divisions by screen proportions
-	if (canvasHeight >= canvasWidth) {
-		var nw = n;
-		var gw = canvasWidth/n;
-		var nh = Math.floor(canvasHeight/gw);
-		var h3 = canvasHeight-(nh*gw);
-		var w3 = 0;
-	} else {
-		var nh = n;
-		var gw = canvasHeight/n;
-		var nw = Math.floor(canvasWidth/gw);
-		var w3 = canvasWidth-(nw*gw);
-		var h3 = 0;
-	}
+
+    // Define height and width divisions by screen proportions
+    if (canvasHeight >= canvasWidth) {
+        var nw = n;
+        var gw = canvasWidth/n;
+        var nh = Math.floor(canvasHeight/gw);
+        var h3 = canvasHeight-(nh*gw);
+        var w3 = 0;
+    } else {
+        var nh = n;
+        var gw = canvasHeight/n;
+        var nw = Math.floor(canvasWidth/gw);
+        var w3 = canvasWidth-(nw*gw);
+        var h3 = 0;
+    }
+
 
 	var h1 = canvasHeight;
 	var w1 = canvasWidth;
 	var h2 = canvasHeight - gw;
 	var w2 = canvasWidth - gw;
-	var radius = (0.85*gw) / 2;
+	var radius = (radiusFactor*gw) / 2;
+
 
 	// Adjust canvas size to window size and centre it
 	canvas.height = h1;
@@ -179,6 +318,8 @@ function circles() {
 	canvas.style.margin = "0 auto";
 
 
+
+    
 	// Setup Paper.js project
 	paper.setup(canvas);
 
@@ -419,7 +560,6 @@ function circles() {
 
 	// Draw circles from point coordinates and radius
 	circleGroup = new Group();
-	circleGroup.borderState = 0;
 
 	for (var i = 0; i < centroidsArray.length; i++) {
 		var centroid = centroidsArray[i]
@@ -430,13 +570,14 @@ function circles() {
 		circle.address_x = centroidsArray[i].address_x;
 		circle.address_y = centroidsArray[i].address_y;
 		circle.fadeToggle = 0;
-		circle.fillColor = {hue: paperHue, saturation: 1, lightness: lightnessLimit};
+		circle.fillColor = {hue: paperHue, saturation: 0.5, lightness: paperSaturation};
 		circle.strokeColor = {hue: 0, saturation: 0, lightness: 0};
 		circle.strokeWidth = 0.5;
+        circle.borderState = 0;
 		if (circle.state === 1) {
             
 		} else {
-			circle.fillColor.lightness = lightnessLimit;
+			circle.fillColor.lightness = paperSaturation;
 			circle.state = 0;
 		}
 		circleGroup.addChild(circle);
@@ -450,26 +591,28 @@ function circles() {
 		circle.onMouseLeave = function(){		
 			if (mouse === 0) {
 				switchState(this,0);
-				this.strokeWidth = 0.5;
-			} else if (this.state === 0) {
-				this.strokeWidth = 0.5;
-			} else {
-				this.strokeWidth = 0.5;
-			}
+            }
+            unScaleStroke(this);
+            //recordPattern(circleGroup);
+            
 		}		
 
 		circle.onClick = function(){
 			automataPathway(this);
+            //recordPattern(circleGroup);
 		}
 
 		view.onFrame = function(event){
+            
+            // Record live pattern
+            recordPattern(circleGroup);
 
 			// Gradual fade using onFrame functionality
 			function fadeTo(increment, delay) {
 				eventStart = event.count;
 				eventDelta = eventStart
 
-				stepCount = 1/increment;
+				stepCount = paperSaturation/increment;
 				fadeStart = (delay * stepCount) + eventStart;
 				stepSize = [];
 
@@ -481,7 +624,7 @@ function circles() {
 
 				for (var i = 0; i < circleGroup.children.length; i++) {
 					fadeValue = circleGroup.children[i].fillColor.lightness;
-					if ((circleGroup.children[i].fadeToggle === 1) && (fadeValue > lightnessLimit + 0)) {
+					if ((circleGroup.children[i].fadeToggle === 1) && (fadeValue >= (paperSaturation + increment))) {
 						circleGroup.children[i].fillColor.lightness -= stepSize;
 					} else if ((circleGroup.children[i].fadeToggle === 2) && (fadeValue < 1)) {
 						circleGroup.children[i].fillColor.lightness += stepSize;
@@ -497,23 +640,47 @@ function circles() {
 
 	$( "#bdr" ).click(function() {
 		switchStroke(circleGroup);
+        //recordPattern(circleGroup);
 	} );
 
 	$( "#inv" ).click(function() {
 		invertFill(circleGroup);
+        //recordPattern(circleGroup);
 	} );
 
 	$( "#clr" ).click(function() {
 		clearFill(circleGroup);
+        //recordPattern(circleGroup);
 	} );
 
 	$( "#rnd" ).click(function() {
 		randomFill(circleGroup);
+        //recordPattern(circleGroup);
 	} );
+    
+    $( "#slider_hue" ).on( "slidechange", function( event, ui ) {
+        changeHue(circleGroup);
+        console.log(paperHue);
+    } );
     
     $( "#slider_hue" ).on( "slide", function( event, ui ) {
         changeHue(circleGroup);
-       // console.log(circleGroup.fillColor.hue);
+        console.log(paperHue);
+    } );
+    
+    $( "#slider_sat" ).on( "slidechange", function() {
+        changeSat(circleGroup);
+        console.log(paperSaturation);
+    } );
+    
+    $( "#slider_sat" ).on( "slide", function( event, ui ) {
+        changeSat(circleGroup);
+        console.log(paperSaturation);
+    } );
+    
+    $( "#slider_rad" ).on( "slide", function( event, ui ) {
+        changeRadius(circleGroup);
+        console.log(radius);
     } );
 
 	paper.view.draw();
@@ -533,9 +700,11 @@ function shuffleArray(array) {
 }
 
 
+
 //Setup SVG Canvas
 $(document).ready(function() {
-    circles();	
+    circles();
+    recordPattern(circleGroup);
 });
 
 //Resize canvas to match window size
