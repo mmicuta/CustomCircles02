@@ -417,6 +417,36 @@ function circles() {
 		}
 	}
 
+    
+	// Cellular Automata function, switch circle state based on neighbours
+	function automata(input, delay) {
+			var count = 0;
+			var neighbours = [];
+			for (var i = -1; i <= 2; i++) {
+				for (var j = -1; j <= 2; j++) {
+					var x = input.address_x + i;
+					var y = input.address_y + j;
+
+					// Check against boundary conditions, stop process when adjacent to edges.
+					if (x < 0) {
+						continue;
+					} else if (x >= nw) {
+						continue;
+					} else if (y < 0) {
+						continue;
+					} else if (y >= nh) {
+						continue;
+					}
+
+					var neighbour = project.getItem({address_x: x, address_y: y})
+					var value = neighbour.state;
+					count += value;
+					neighbours.push(neighbour);
+				}
+			}	
+
+			switchState(input, delay);
+	}    
 
 	// Create automata pathway from selected circle
 	function automataPathway(input) {
@@ -428,7 +458,7 @@ function circles() {
 		oldY = input.address_y
 		var firstAddressCoords = {address_x:oldX, address_y:oldY}
 		oldAddresses.push(firstAddressCoords);
-		switchState(input, 0);
+		switchState(input);
 
 		for (var k = 0; k < (Math.min(nw,nh)/2); k++){
 
@@ -631,13 +661,11 @@ function circles() {
 				switchState(this,0);
             }
             unScaleStroke(this);
-            //recordPattern(circleGroup);
             
 		}		
 
 		circle.onClick = function(){
 			automataPathway(this);
-            //recordPattern(circleGroup);
 		}		
 
 	};
