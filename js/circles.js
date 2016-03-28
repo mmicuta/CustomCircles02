@@ -15,6 +15,9 @@ var radiusFactor = 0.86;
 var gw = 0;
 var patternCode;
 
+var ratioWidth;
+var ratioHeight;
+
 
 // 1.2 FUNCTIONS
 
@@ -269,13 +272,34 @@ function recordPattern(input) {
     }
     patternHex = ConvertBase.bin2rad(patternCode);
     $("#patternCode").text(patternHex);
-    console.log(patternHex);
+    //console.log(patternHex);
 }
 
 // Open Canvas preview in new tab
 function previewCanvas(input) {
     var canvasPreview = input.toDataURL();
     window.open(canvasPreview, "Grid Preview");
+}
+
+// Change to Poster Aspect Ratio
+function ratioPoster() {
+    ratioWidth = $(".canvascontainer").innerWidth();
+    ratioHeight = ratioWidth * 1.618;
+    
+    //console.log(ratioWidth, ratioHeight);
+}
+
+// Change to Screen Aspect Ratio
+function ratioScreen() {
+    screenWidth = screen.width;
+    screenHeight = screen.height;
+    
+    ratioWidth = $(".canvascontainer").innerWidth();
+    //canvasScale = screenWidth / ratioWidth;
+    canvasScale =  ratioWidth / screenWidth;
+    ratioHeight = canvasScale * screenHeight;
+    
+    //console.log(ratioWidth, ratioHeight);
 }
 
 
@@ -291,9 +315,12 @@ function circles() {
         clearData(circleGroup);
     }
 
-    var canvasWidth = $(".canvascontainer").innerWidth();
-    var canvasHeight = canvasWidth * 1.618;
-
+    
+    
+    var canvasWidth = ratioWidth;
+    var canvasHeight = ratioHeight;
+    
+    console.log(canvasWidth, canvasHeight);
 
     // Define height and width divisions by screen proportions
     if (canvasHeight >= canvasWidth) {
@@ -661,8 +688,17 @@ function circles() {
 
 	$( "#rnd" ).click(function() {
 		randomFill(circleGroup);
-        //recordPattern(circleGroup);
 	} );
+    
+    $( "#poster" ).click(function() {
+        ratioPoster();
+        //circles();
+    } );
+
+    $( "#screen" ).click(function() {
+        ratioScreen();
+        //circles();
+    } );
     
     $( "#prev" ).click(function() {
         previewCanvas(canvas);
@@ -695,8 +731,6 @@ function circles() {
 
 	paper.view.draw();
 
-
-
 };
 
 function shuffleArray(array) {
@@ -713,6 +747,7 @@ function shuffleArray(array) {
 
 //Setup SVG Canvas
 $(document).ready(function() {
+    ratioPoster()
     circles();
     recordPattern(circleGroup);
 });
