@@ -2,7 +2,7 @@
 paper.install(window);
 
 
-// 1.1 Variable Declarations
+// 1.1 VARIABLES
 
 var n = 10;
 var fadeIncrement = 0.1;
@@ -16,7 +16,7 @@ var gw = 0;
 var patternCode;
 
 
-// 1.2 USEFUL FUNCTIONS
+// 1.2 FUNCTIONS
 
 // Change Base (i.e. binary to hex)
 (function(){
@@ -272,8 +272,14 @@ function recordPattern(input) {
     console.log(patternHex);
 }
 
+// Open Canvas preview in new tab
+function previewCanvas(input) {
+    var canvasPreview = input.toDataURL();
+    window.open(canvasPreview, "Grid Preview");
+}
 
-// 2.0 MAIN PAPER.JS SECTION
+
+// 2.0 PAPER.JS
 
 function circles() {
 	// Reference canvas element
@@ -656,6 +662,10 @@ function circles() {
 	$( "#rnd" ).click(function() {
 		randomFill(circleGroup);
         //recordPattern(circleGroup);
+	} );
+    
+    $( "#prev" ).click(function() {
+        previewCanvas(canvas);
 	} );
     
     $( "#slider_hue" ).on( "slidechange", function( event, ui ) {
