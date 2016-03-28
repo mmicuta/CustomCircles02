@@ -185,9 +185,8 @@ function unScaleStroke(input) {
 // Invert fill of all circles
 function invertFill(input) {
     for (var i = 0; i < input.children.length; i++) {
-        switchState(input.children[i],0);
+        switchState(input.children[i]);
     }
-    //recordPattern(input);
 }
 
 // Clear fill to all white
@@ -283,10 +282,14 @@ function previewCanvas(input) {
 
 // Change to Poster Aspect Ratio
 function ratioPoster() {
-    ratioWidth = $(".canvascontainer").innerWidth();
-    ratioHeight = ratioWidth * 1.618;
+    //ratioWidth = $(".canvascontainer").innerWidth();
+    //ratioHeight = ratioWidth * 1.618;
+    
+    ratioHeight = $(document).innerHeight() - 200;
+    ratioWidth = ratioHeight / 1.618;
     
     //console.log(ratioWidth, ratioHeight);
+    //circles();
 }
 
 // Change to Screen Aspect Ratio
@@ -296,11 +299,15 @@ function ratioScreen() {
     
     ratioWidth = $(".canvascontainer").innerWidth();
     //canvasScale = screenWidth / ratioWidth;
-    canvasScale =  ratioWidth / screenWidth;
+    canvasScale = ratioWidth / screenWidth;
     ratioHeight = canvasScale * screenHeight;
     
     //console.log(ratioWidth, ratioHeight);
+    //circles();
 }
+
+// Set grid parameters from aspect ratio
+
 
 
 // 2.0 PAPER.JS
@@ -314,13 +321,11 @@ function circles() {
     if (typeof circleGroup !== 'undefined') {
         clearData(circleGroup);
     }
-
-    
     
     var canvasWidth = ratioWidth;
     var canvasHeight = ratioHeight;
     
-    console.log(canvasWidth, canvasHeight);
+    //console.log(canvasWidth, canvasHeight);
 
     // Define height and width divisions by screen proportions
     if (canvasHeight >= canvasWidth) {
@@ -633,57 +638,55 @@ function circles() {
 		circle.onClick = function(){
 			automataPathway(this);
             //recordPattern(circleGroup);
-		}
-
-		view.onFrame = function(event){
-            
-            // Record live pattern
-            recordPattern(circleGroup);
-
-			// Gradual fade using onFrame functionality
-			function fadeTo(increment, delay) {
-				eventStart = event.count;
-				eventDelta = eventStart
-
-				stepCount = paperSaturation/increment;
-				fadeStart = (delay * stepCount) + eventStart;
-				stepSize = [];
-
-				if (event.count >= fadeStart) {
-					stepSize = 0;
-				} else {
-					stepSize = increment;
-				}
-
-				for (var i = 0; i < circleGroup.children.length; i++) {
-					fadeValue = circleGroup.children[i].fillColor.lightness;
-					if ((circleGroup.children[i].fadeToggle === 1) && (fadeValue >= (paperSaturation + increment))) {
-						circleGroup.children[i].fillColor.lightness -= stepSize;
-					} else if ((circleGroup.children[i].fadeToggle === 2) && (fadeValue < 1)) {
-						circleGroup.children[i].fillColor.lightness += stepSize;
-					} else {
-						circleGroup.children[i].fadeToggle = 0;
-					}
-				}
-			}
-			fadeTo(fadeIncrement);
-		}
+		}		
 
 	};
+    
+    view.onFrame = function(event){
+            
+        // Record live pattern
+        recordPattern(circleGroup);
+
+
+        // Gradual fade using onFrame functionality
+        function fadeTo(increment, delay) {
+            eventStart = event.count;
+            eventDelta = eventStart
+
+            stepCount = paperSaturation/increment;
+            fadeStart = (delay * stepCount) + eventStart;
+            stepSize = [];
+
+            if (event.count >= fadeStart) {
+                stepSize = 0;
+            } else {
+                stepSize = increment;
+            }
+
+            for (var i = 0; i < circleGroup.children.length; i++) {
+                fadeValue = circleGroup.children[i].fillColor.lightness;
+                if ((circleGroup.children[i].fadeToggle === 1) && (fadeValue >= (paperSaturation + increment))) {
+                    circleGroup.children[i].fillColor.lightness -= stepSize;
+                } else if ((circleGroup.children[i].fadeToggle === 2) && (fadeValue < 1)) {
+                    circleGroup.children[i].fillColor.lightness += stepSize;
+                } else {
+                    circleGroup.children[i].fadeToggle = 0;
+                }
+            }
+        }
+        fadeTo(fadeIncrement);
+    }
 
 	$( "#bdr" ).click(function() {
 		switchStroke(circleGroup);
-        //recordPattern(circleGroup);
 	} );
 
 	$( "#inv" ).click(function() {
 		invertFill(circleGroup);
-        //recordPattern(circleGroup);
 	} );
 
 	$( "#clr" ).click(function() {
 		clearFill(circleGroup);
-        //recordPattern(circleGroup);
 	} );
 
 	$( "#rnd" ).click(function() {
@@ -692,12 +695,10 @@ function circles() {
     
     $( "#poster" ).click(function() {
         ratioPoster();
-        //circles();
     } );
 
     $( "#screen" ).click(function() {
         ratioScreen();
-        //circles();
     } );
     
     $( "#prev" ).click(function() {
@@ -749,7 +750,7 @@ function shuffleArray(array) {
 $(document).ready(function() {
     ratioPoster()
     circles();
-    recordPattern(circleGroup);
+    //recordPattern(circleGroup);
 });
 
 //Resize canvas to match window size
