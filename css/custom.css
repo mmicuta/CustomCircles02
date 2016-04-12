@@ -64,6 +64,10 @@ body {
 	z-index: -1;
 }
 
+.slider {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
 
 /* Bootstrap Header & Footer Styles */
 html {
