@@ -35,49 +35,49 @@ var ratioHeight;
             }
         };
     };
-        
+
     // binary to decimal
     ConvertBase.bin2dec = function (num) {
         return ConvertBase(num).from(2).to(10);
     };
-    
+
     // binary to hexadecimal
     ConvertBase.bin2hex = function (num) {
         return ConvertBase(num).from(2).to(16);
     };
-    
+
     // binary to radix-36
     ConvertBase.bin2rad = function (num) {
         return ConvertBase(num).from(2).to(36);
     };
-    
+
     // decimal to binary
     ConvertBase.dec2bin = function (num) {
         return ConvertBase(num).from(10).to(2);
     };
-    
+
     // decimal to hexadecimal
     ConvertBase.dec2hex = function (num) {
         return ConvertBase(num).from(10).to(16);
     };
-    
+
     // hexadecimal to binary
     ConvertBase.hex2bin = function (num) {
         return ConvertBase(num).from(16).to(2);
     };
-    
+
     // radix-64 to binary
     ConvertBase.rad2bin = function (num) {
         return ConvertBase(num).from(36).to(2);
     };
-    
+
     // hexadecimal to decimal
     ConvertBase.hex2dec = function (num) {
         return ConvertBase(num).from(16).to(10);
     };
-    
+
     this.ConvertBase = ConvertBase;
-    
+
 })(this);
 
 
@@ -284,10 +284,10 @@ function previewCanvas(input) {
 function ratioPoster() {
     //ratioWidth = $(".canvascontainer").innerWidth();
     //ratioHeight = ratioWidth * 1.618;
-    
+
     ratioHeight = $(document).innerHeight() - 200;
     ratioWidth = ratioHeight / 1.618;
-    
+
     //console.log(ratioWidth, ratioHeight);
     //circles();
 }
@@ -296,12 +296,12 @@ function ratioPoster() {
 function ratioScreen() {
     screenWidth = screen.width;
     screenHeight = screen.height;
-    
+
     ratioWidth = $(".canvascontainer").innerWidth();
     //canvasScale = screenWidth / ratioWidth;
     canvasScale = ratioWidth / screenWidth;
     ratioHeight = canvasScale * screenHeight;
-    
+
     //console.log(ratioWidth, ratioHeight);
     //circles();
 }
@@ -314,17 +314,17 @@ function ratioScreen() {
 
 function circles() {
 	// Reference canvas element
-	var canvas = document.getElementById("canvas01"); 
+	var canvas = document.getElementById("canvas01");
 
 	// Clear previous canvas
 	paper.clear(canvas);
     if (typeof circleGroup !== 'undefined') {
         clearData(circleGroup);
     }
-    
+
     var canvasWidth = ratioWidth;
     var canvasHeight = ratioHeight;
-    
+
     //console.log(canvasWidth, canvasHeight);
 
     // Define height and width divisions by screen proportions
@@ -357,10 +357,9 @@ function circles() {
 
 
 
-    
+
 	// Setup Paper.js project
 	paper.setup(canvas);
-
 
 	// Choose a random next direction for the switchState pathway to move to
 	function randomPath(oldX, oldY, oldAdds) {
@@ -371,7 +370,7 @@ function circles() {
 		newXAdd = [];
 		newYAdd = [];
 		invalidCircle = 1;
-		
+
 		for (var z = 0; z < 4; z++) {
 			newPath = possiblePaths[z];
 			newX = oldX + newPath[0];
@@ -417,7 +416,7 @@ function circles() {
 		}
 	}
 
-    
+
 	// Cellular Automata function, switch circle state based on neighbours
 	function automata(input, delay) {
 			var count = 0;
@@ -443,10 +442,10 @@ function circles() {
 					count += value;
 					neighbours.push(neighbour);
 				}
-			}	
+			}
 
 			switchState(input, delay);
-	}    
+	}
 
 	// Create automata pathway from selected circle
 	function automataPathway(input) {
@@ -500,12 +499,12 @@ function circles() {
 				negY = project.getItem({
 					address_x: oldX,
 					address_y: negYAdd
-				})		
+				})
 
 				posY = project.getItem({
 					address_x: oldX,
 					address_y: posYAdd
-				}) 
+				})
 
 				negXCoords = {address_x:negXAdd, address_y:oldY}
 				posXCoords = {address_x:posXAdd, address_y:oldY}
@@ -532,7 +531,7 @@ function circles() {
 					})
 					newCoords = {address_x:newXAdd, address_y:newYAdd}
 					oldAddresses.push(newCoords);
-					automata(negX, k/2);			
+					automata(negX, k/2);
 				}
 
 
@@ -569,10 +568,10 @@ function circles() {
 					automata(posY, k/2);
 				}
 			}
-		}	
+		}
 	};
 
-	
+
 
 	// Record if the mouse is clicked
 	mouse = 1;
@@ -615,7 +614,7 @@ function circles() {
 		circle.strokeWidth = 0.5;
         circle.borderState = 0;
 		if (circle.state === 1) {
-            
+
 		} else {
 			circle.fillColor.lightness = paperSaturation;
 			circle.state = 0;
@@ -624,26 +623,26 @@ function circles() {
 
 
 		// Mouse event based behaviour
-		circle.onMouseEnter = function(){		
+		circle.onMouseEnter = function(){
 			scaleStroke(this);
 		}
 
-		circle.onMouseLeave = function(){		
+		circle.onMouseLeave = function(){
 			if (mouse === 0) {
 				switchState(this,0);
             }
             unScaleStroke(this);
-            
-		}		
+
+		}
 
 		circle.onClick = function(){
 			automataPathway(this);
-		}		
+		}
 
 	};
-    
+
     view.onFrame = function(event){
-            
+
         // Record live pattern
         recordPattern(circleGroup);
 
@@ -677,22 +676,22 @@ function circles() {
         fadeTo(fadeIncrement);
     }
 
-	$( "#bdr" ).click(function() {
-		switchStroke(circleGroup);
-	} );
+  	$( "#bdr" ).click(function() {
+  		switchStroke(circleGroup);
+  	} );
 
-	$( "#inv" ).click(function() {
-		invertFill(circleGroup);
-	} );
+  	$( "#inv" ).click(function() {
+  		invertFill(circleGroup);
+  	} );
 
-	$( "#clr" ).click(function() {
-		clearFill(circleGroup);
-	} );
+  	$( "#clr" ).click(function() {
+  		clearFill(circleGroup);
+  	} );
 
-	$( "#rnd" ).click(function() {
-		randomFill(circleGroup);
-	} );
-    
+  	$( "#rnd" ).click(function() {
+  		randomFill(circleGroup);
+  	} );
+
     $( "#poster" ).click(function() {
         ratioPoster();
     } );
@@ -700,31 +699,39 @@ function circles() {
     $( "#screen" ).click(function() {
         ratioScreen();
     } );
-    
+
     $( "#prev" ).click(function() {
         previewCanvas(canvas);
-	} );
-    
+  	} );
+
+    $('#export-button').click(function() {
+      var svg = project.exportSVG({ asString: true });
+        downloadDataUri({
+        data: 'data:image/svg+xml;base64,' + btoa(svg),
+        filename: 'export.svg'
+      });
+    });
+
     $( "#slider_hue" ).on( "slidechange", function( event, ui ) {
         changeHue(circleGroup);
         console.log(paperHue);
     } );
-    
+
     $( "#slider_hue" ).on( "slide", function( event, ui ) {
         changeHue(circleGroup);
         console.log(paperHue);
     } );
-    
+
     $( "#slider_sat" ).on( "slidechange", function() {
         changeSat(circleGroup);
         console.log(paperSaturation);
     } );
-    
+
     $( "#slider_sat" ).on( "slide", function( event, ui ) {
         changeSat(circleGroup);
         console.log(paperSaturation);
     } );
-    
+
     $( "#slider_rad" ).on( "slide", function( event, ui ) {
         changeRadius(circleGroup);
         console.log(radius);
