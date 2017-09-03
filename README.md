@@ -1,6 +1,4 @@
-CustomCircles02
+gridit - Circle Grid
 ===============
 
-Parametric and interactive circles
-
-Intent is to create a basic canvas from which I can publish experiments in generative art.
+Platform to create circle grid artwork.

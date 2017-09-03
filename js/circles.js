@@ -704,13 +704,7 @@ function circles() {
         previewCanvas(canvas);
   	} );
 
-    $('#export-button').click(function() {
-      var svg = project.exportSVG({ asString: true });
-        downloadDataUri({
-        data: 'data:image/svg+xml;base64,' + btoa(svg),
-        filename: 'export.svg'
-      });
-    });
+
 
     $( "#slider_hue" ).on( "slidechange", function( event, ui ) {
         changeHue(circleGroup);
@@ -751,7 +745,13 @@ function shuffleArray(array) {
     return array;
 }
 
-
+$('#export').click(function() {
+//  var svg = paper.exportSVG({ asString: true });
+  //  downloadDataUri({
+    //data: 'data:image/svg+xml;base64,' + btoa(svg),
+    //filename: 'export.svg'
+  //});
+});
 
 //Setup SVG Canvas
 $(document).ready(function() {
