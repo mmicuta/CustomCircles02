@@ -704,8 +704,6 @@ function circles() {
         previewCanvas(canvas);
   	} );
 
-
-
     $( "#slider_hue" ).on( "slidechange", function( event, ui ) {
         changeHue(circleGroup);
         console.log(paperHue);
@@ -731,6 +729,23 @@ function circles() {
         console.log(radius);
     } );
 
+    function downloadDataUri(options) {
+    	if (!options.url)
+    		options.url = "http://download-data-uri.appspot.com/";
+    	$('<form method="post" action="' + options.url
+    		+ '" style="display:none"><input type="hidden" name="filename" value="'
+    		+ options.filename + '"/><input type="hidden" name="data" value="'
+    		+ options.data + '"/></form>').appendTo('body').submit().remove();
+    }
+
+    $('#export').click(function() {
+    	var svg = project.exportSVG({ asString: true });
+    	downloadDataUri({
+    		data: 'data:image/svg+xml;base64,' + btoa(svg),
+    		filename: 'export.svg'
+    	});
+    });
+
 	paper.view.draw();
 
 };
@@ -744,14 +759,6 @@ function shuffleArray(array) {
     }
     return array;
 }
-
-$('#export').click(function() {
-//  var svg = paper.exportSVG({ asString: true });
-  //  downloadDataUri({
-    //data: 'data:image/svg+xml;base64,' + btoa(svg),
-    //filename: 'export.svg'
-  //});
-});
 
 //Setup SVG Canvas
 $(document).ready(function() {
