@@ -118,8 +118,8 @@ $(function () {
 $(function () {
 	$( "#slider_sat" ).slider({
 		value: 0.8,
-		min: 0.5,
-		max: 0.8,
+		min: 0,
+		max: 0.9,
 		step: 0.02,
         slide: function (event, ui) {
 			paperSaturation = ui.value;
@@ -305,10 +305,6 @@ function ratioScreen() {
     //console.log(ratioWidth, ratioHeight);
     //circles();
 }
-
-// Set grid parameters from aspect ratio
-
-
 
 // 2.0 PAPER.JS
 
@@ -728,6 +724,11 @@ function circles() {
         changeRadius(circleGroup);
         console.log(radius);
     } );
+
+    $( "#graytorgb" ).click(function() {
+        graytoRGB();
+        console.log(clrBoolean);
+    })
 
     function downloadDataUri(options) {
     	if (!options.url)
