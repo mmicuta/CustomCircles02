@@ -1,8 +1,10 @@
-// 1.0 Install paper.js event handlers
+// 1.0
+// Install paper.js event handlers
 paper.install(window);
 
 
-// 1.1 VARIABLES
+// 1.1
+// VARIABLES
 
 var n = 10;
 var fadeIncrement = 0.1;
@@ -19,7 +21,8 @@ var ratioWidth;
 var ratioHeight;
 
 
-// 1.2 FUNCTIONS
+// 1.2
+// FUNCTIONS
 
 // Change Base (i.e. binary to hex)
 (function(){
@@ -81,7 +84,8 @@ var ratioHeight;
 })(this);
 
 
-// 1.3 UI CONTROLS
+// 1.3
+// UI CONTROLS
 
 // Slider to control grid density
 $(function () {
@@ -282,14 +286,8 @@ function previewCanvas(input) {
 
 // Change to Poster Aspect Ratio
 function ratioPoster() {
-    //ratioWidth = $(".canvascontainer").innerWidth();
-    //ratioHeight = ratioWidth * 1.618;
-
     ratioHeight = $(document).innerHeight() - 200;
     ratioWidth = ratioHeight / 1.618;
-
-    //console.log(ratioWidth, ratioHeight);
-    //circles();
 }
 
 // Change to Screen Aspect Ratio
@@ -298,15 +296,12 @@ function ratioScreen() {
     screenHeight = screen.height;
 
     ratioWidth = $(".canvascontainer").innerWidth();
-    //canvasScale = screenWidth / ratioWidth;
     canvasScale = ratioWidth / screenWidth;
     ratioHeight = canvasScale * screenHeight;
-
-    //console.log(ratioWidth, ratioHeight);
-    //circles();
 }
 
-// 2.0 PAPER.JS
+// 2.0
+// PAPER.JS
 
 function circles() {
 	// Reference canvas element
@@ -320,8 +315,6 @@ function circles() {
 
     var canvasWidth = ratioWidth;
     var canvasHeight = ratioHeight;
-
-    //console.log(canvasWidth, canvasHeight);
 
     // Define height and width divisions by screen proportions
     if (canvasHeight >= canvasWidth) {
@@ -344,6 +337,8 @@ function circles() {
 	var h2 = canvasHeight - gw;
 	var w2 = canvasWidth - gw;
 	var radius = (radiusFactor*gw) / 2;
+  var hBdy = h1 * 1.618;
+  var wBdy = w1 * 1.618;
 
 
 	// Adjust canvas size to window size and centre it
@@ -351,8 +346,12 @@ function circles() {
 	canvas.width = w1;
 	canvas.style.margin = "0 auto";
 
-
-
+  // Create rectangular bounding sheet for export
+  var sheetBdy = new Rectangle({
+    point: [-wBdy/2, hBdy/2],
+    size: [wBdy, hBdy]
+  });
+  console.log(hBdy, wBdy, sheetBdy);
 
 	// Setup Paper.js project
 	paper.setup(canvas);
@@ -411,7 +410,6 @@ function circles() {
 			}
 		}
 	}
-
 
 	// Cellular Automata function, switch circle state based on neighbours
 	function automata(input, delay) {
@@ -740,7 +738,7 @@ function circles() {
     }
 
     $('#export').click(function() {
-    	var svg = project.exportSVG({ asString: true });
+    	var svg = project.exportSVG({ asString: true, bounds: sheetBdy });
     	downloadDataUri({
     		data: 'data:image/svg+xml;base64,' + btoa(svg),
     		filename: 'export.svg'
